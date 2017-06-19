@@ -27,15 +27,6 @@ export default {
       seller: {}
     }
   },
-  created () {
-    this.$axios.get('../src/resource/img/brand@2x.png').then((res) => {
-      this.seller = res.seller
-      console.log(1)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  },
   components: {
     'vHeader': vHeader
   }
