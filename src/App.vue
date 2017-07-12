@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vHeader></vHeader>
+    <vHeader :seller="seller"></vHeader>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods" class="active">商品</router-link>
@@ -13,12 +13,13 @@
       </div>
     </div>
     <div class="content">
-      <router-view></router-view>
+      <router-view :seller="seller"></router-view>
     </div>
   </div>
 </template>
 
 <script>
+  /* eslint-disable */
 import vHeader from './components/header/header.vue'
 export default {
   name: 'app',
@@ -26,6 +27,16 @@ export default {
     return {
       seller: {}
     }
+  },
+  created() {
+    let _this = this;
+    this.$axios.get('static/json/data.json').then((res) => {
+      _this.seller = res.data.seller
+      // console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   },
   components: {
     'vHeader': vHeader
