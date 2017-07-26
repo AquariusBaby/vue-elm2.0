@@ -33,7 +33,7 @@
 				} else {
 					this.food.count++
 				}
-				console.log(this.$el)
+				// console.log(Vue)
 			},
 			decCart() {
 				if(this.food.count) {

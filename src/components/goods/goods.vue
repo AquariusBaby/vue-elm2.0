@@ -14,7 +14,7 @@
 				<li v-for="item in goods" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li @touchstart="selectFood(food, $event)" v-for="(food, index1) in item.foods" class="food-item border-1px">
+						<li @click="selectFood(food, $event)" v-for="(food, index1) in item.foods" class="food-item border-1px">
 							<div class="icon">
 								<img width="57" height="57" :src="food.icon" alt="">
 							</div>
@@ -98,7 +98,7 @@
 		created() {
 			let _this = this
 			this.$axios.get('static/json/data.json').then((res) => {
-				_this.goods = res.data.ratings
+				_this.goods = res.data.goods
 				_this.$nextTick(() => {
 					_this._initScroll()
 					_this._calculateHeight()

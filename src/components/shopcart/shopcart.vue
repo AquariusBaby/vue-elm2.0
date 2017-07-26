@@ -57,7 +57,7 @@
 				default: 0
 			},
 			selectFoods: {
-				type: Array,
+				type: Array/*,
 				default() {
 					return [
 						{
@@ -65,7 +65,7 @@
 							count: 1
 						}
 					]
-				}
+				}*/
 			}
 		},
 		data() {
@@ -144,13 +144,14 @@
 				}
 				let show = !this.fold
 				if(show) {
-					this.nextTick(() => {
+					this.$nextTick(() => {
 						if(!this.scroll) {
-							this.scroll = new BScroll(this.$rels.listContent)
+							this.scroll = new BScroll(this.$refs.listContent)
 						} else {
 							this.scroll.refresh();
 						}
 					})
+					// console.log(this)
 				}
 			}
 		},
