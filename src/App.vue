@@ -15,6 +15,7 @@
     <div class="content">
       <router-view :seller="seller"></router-view>
     </div>
+    <div class="cover" v-show="0"></div>
   </div>
 </template>
 
@@ -82,6 +83,14 @@ export default {
         }
       }
     }
+  }
+  .cover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
   }
 }
 </style>

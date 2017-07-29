@@ -187,17 +187,19 @@
     width: 100%;
     overflow: hidden;
     .overview {
+      text-align: left;
       position: relative;
       padding: 18px;
       .title {
         margin-bottom: 8px;
         line-height: 14px;
         color: rgb(7, 17, 27);
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: bold;
       }
       .desc {
         padding-bottom: 18px;
-        border: 1px solid rgba(7, 17, 27, 0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         font-size: 0;
         .star {
           display: inline-block;
@@ -272,7 +274,7 @@
       }
       .content-wrapper {
         padding: 0 12px 16px 12px;
-        border: 1px solid rgba(7, 17, 27, 0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         .content {
           line-height: 24px;
           font-size: 12px;
@@ -282,7 +284,7 @@
       .supports {
         .support-item {
           padding: 16px 12px;
-          border: 1px solid rgba(7, 17, 27, 0.1);
+          border-bottom: 1px solid rgba(7, 17, 27, 0.1);
           font-size: 0;
           &:last-child {
             
@@ -351,13 +353,13 @@
       .title {
         padding-bottom: 12px;
         line-height: 14px;
-        border: 1px solid rgba(7, 17, 27, 0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         font-size: 14px;
       }
       .info-item {
         padding: 16px 12px;
         line-height: 16px;
-        border: 1px solid rgba(7, 17, 27, 0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         font-size: 12px;
         &:last-child {
           

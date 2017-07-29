@@ -14,7 +14,7 @@
 				<li v-for="item in goods" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li @click="selectFood(food, $event)" v-for="(food, index1) in item.foods" class="food-item border-1px">
+						<li @tab="selectFood(food, $event)" v-for="(food, index1) in item.foods" class="food-item border-1px">
 							<div class="icon">
 								<img width="57" height="57" :src="food.icon" alt="">
 							</div>
@@ -177,10 +177,10 @@
 	}
 	.goods {
 		display: flex;
-		position: absolute;
-		top: 174px;
+		// position: absolute;
+		// top: 174px;
 		width: 100%;
-		bottom: 46px;
+		// bottom: 46px;
 		overflow: hidden;
 		.menu-wrapper {
 			flex: 0 0 80px;

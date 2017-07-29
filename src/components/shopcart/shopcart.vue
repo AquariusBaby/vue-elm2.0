@@ -1,6 +1,6 @@
 <template>
 	<div class="shopcart">
-		<div class="content" @touchstart="toggleList()">
+		<div class="content" @touchstart.stop="toggleList()">
 			<div class="content-left">
 				<div class="logo-wrapper">
 					<div class="logo" :class="{'highlight':totalCount>0}">
@@ -57,22 +57,11 @@
 				default: 0
 			},
 			selectFoods: {
-				type: Array/*,
-				default() {
-					return [
-						{
-							price: 12,
-							count: 1
-						}
-					]
-				}*/
+				type: Array
 			}
 		},
 		data() {
 			return {
-				// seller: {},
-				// selectFoods: {'zhou': {price: 10, count: 2}, 'cool': {price: 10, count: 2}, 'rice': {price: 12, count: 1}}
-				// selectFoods: {'zhou': '10', 'rice': '11'}
 				balls: [
 					{
 						show: false
@@ -96,26 +85,15 @@
 		computed: {
 			totalPrice() {
 				let total = 0
-				// this.selectFoods.forEach((food) => {
-				// 	total += food.price * food.count
-				// })
-				// for(let key in this.selectFoods) {
-				// 	total += this.selectFoods[key].price * this.selectFoods[key].count
-				// 	console.log(typeof this.selectFoods)
-				// }
 				for(let i=0;i<this.selectFoods.length;i++) {
 					total += this.selectFoods[i].price * this.selectFoods[i].count
-					//console.log(typeof this.selectFoods)
 				}
 				return total
 			},
 			totalCount() {
 				let count = 0
-				// this.selectFoods.forEach((food) => {
-				// 	count = this.selectFoods.length
-				// })
+
 				for(let i=0;i<this.selectFoods.length;i++) {
-					//console.log(this.selectFoods)
 					count += this.selectFoods[i].count
 				}
 				return count
@@ -142,7 +120,7 @@
 					this.fold = true
 					return false
 				}
-				let show = !this.fold
+				let show = this.fold
 				if(show) {
 					this.$nextTick(() => {
 						if(!this.scroll) {
@@ -153,6 +131,7 @@
 					})
 					// console.log(this)
 				}
+				return show
 			}
 		},
 		methods: {
@@ -294,7 +273,7 @@
 		}
 		.shopcart-list {
 			position: absolute;
-			top: 0;
+			bottom: 48px;
 			left: 0;
 			z-index: -1;
 			width: 100%;

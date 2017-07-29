@@ -51,6 +51,7 @@
 				</ul>
 			</div>
 		</div>
+    
 	</div>
 </template>
 <script>
@@ -59,6 +60,7 @@
 	import split from '@/components/split/split.vue'
 	import rating from '@/components/ratings/rating.vue'
 	import star from '@/components/star/star.vue'
+  import shopcart from '@/components/shopcart/shopcart.vue'
 
 	const ALL = 2;
 
@@ -103,7 +105,8 @@
 		components: {
 			'vSplit': split,
 			'vRating': rating,
-			'star': star
+			'star': star,
+      'vShopcart': shopcart
 		}
 	}
 </script>
@@ -146,6 +149,7 @@
         }
 			}
 			.overview-right {
+        text-align: left;
         flex: 1;
         padding: 6px 0 6px 24px;
         @media only screen and (max-width: 320px) {
@@ -189,13 +193,16 @@
         }
       }
 		}
+    .rating {
+      text-align: left;
+    }
 		.rating-wrapper {
       padding: 0 18px;
       text-align: left;
       .rating-item {
         display: flex;
         padding: 18px 0;
-        border: 1px solid (rgba(7, 17, 27, 0.1));
+        border-bottom: 1px solid (rgba(7, 17, 27, 0.1));
         .avatar {
           flex: 0 0 28px;
           width: 28px;

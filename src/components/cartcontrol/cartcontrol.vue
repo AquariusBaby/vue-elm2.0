@@ -1,8 +1,8 @@
 <template>
 	<div class="cartcontrol">
-		<div class="decrease" @touchstart='decCart()' v-show="food.count>0">-</div>
+		<div class="decrease" @touchstart.stop='decCart()' v-show="food.count>0">-</div>
 		<div class="count" v-show="food.count>0">{{food.count}}</div>
-		<div class="increase" @touchstart='addCart($event)'>+</div>
+		<div class="increase" @touchstart.stop='addCart($event)'>+</div>
 	</div>
 </template>
 <script>
