@@ -94,6 +94,9 @@
 		},
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+      this.$nextTick(() => {
+          this.scroll = new BScroll(this.$refs.seller)
+      });
     },
     watch: {
       'seller'() {
@@ -180,6 +183,7 @@
 		}
 	}
 	.seller {
+    text-align: left;
     position: absolute;
     top: 174px;
     bottom: 0;
@@ -335,6 +339,7 @@
         white-space: nowrap;
         .pic-list {
           font-size: 0;
+          overflow-x: auto;
           .pic-item {
             display: inline-block;
             margin-right: 6px;
@@ -354,7 +359,8 @@
         padding-bottom: 12px;
         line-height: 14px;
         border-bottom: 1px solid rgba(7, 17, 27, 0.1);
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 600;
       }
       .info-item {
         padding: 16px 12px;
