@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <vHeader :seller="seller"></vHeader>
+    <!-- <vHeader :seller="seller"></vHeader> -->
+    <vHeader></vHeader>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods" class="active">商品</router-link>
@@ -13,34 +14,32 @@
       </div>
     </div>
     <div class="content">
-      <router-view :seller="seller"></router-view>
+      <!-- <router-view :seller="seller"></router-view> -->
+      <router-view></router-view>
     </div>
     <div class="cover" v-show="0"></div>
   </div>
 </template>
 
 <script>
-  /* eslint-disable */
+/* eslint-disable */
+// import { mapGetters } from 'vuex'
 import vHeader from './components/header/header.vue'
 export default {
   name: 'app',
-  data () {
-    return {
-      seller: {}
-    }
-  },
-  created() {
-    let _this = this;
-    this.$axios.get('static/json/data.json').then((res) => {
-      _this.seller = res.data.seller
-      // console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  },
   components: {
     'vHeader': vHeader
+  },
+  data () {
+    return {
+      // seller: {}
+    }
+  },
+  // computed: mapGetters([
+  //   'seller'
+  // ]),
+  created() {
+    this.$store.dispatch('getSllerInfo')
   }
 }
 </script>

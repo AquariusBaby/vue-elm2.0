@@ -6,9 +6,9 @@
 <script>
 /* eslint-disable */
 	const LENGTH = 5,
-				CLS_ON = 'on',
-				CLS_HALF = 'half',
-				CLS_OFF = 'off';	
+		CLS_ON = 'on',
+		CLS_HALF = 'half',
+		CLS_OFF = 'off';	
 	export default {
 		props: {
 			size: {
@@ -24,9 +24,10 @@
 			},
 			itemClasses() {
 				let result = [],
-						score = Math.floor(this.score*2)/2,
-						hasDecimal = score % 1 !== 0,
-						integer = Math.floor(score)
+					score = Math.floor(this.score*2)/2,
+					hasDecimal = score % 1 !== 0,
+					integer = Math.floor(score)
+					;
 				for(let i=0; i<integer; i++) {
 					result.push(CLS_ON)
 				}

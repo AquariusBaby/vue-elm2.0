@@ -2,47 +2,47 @@
 	<div class="header">
 		<div class="content-wrapper">
 			<div class="avatar">
-				<img width="64" height="64" :src="seller.avatar" alt="">
+				<img width="64" height="64" :src="sellerInfo.avatar" alt="">
 			</div>
 			<div class="content">
 				<div class="title">
 					<span class="brand"></span>
-					<span class="name">{{seller.name}}</span>
+					<span class="name">{{sellerInfo.name}}</span>
 				</div>
 				<div class="description">
-					{{seller.description}}/{{seller.deliveryTime}}分钟送达
+					{{sellerInfo.description}}/{{sellerInfo.deliveryTime}}分钟送达
 				</div>
-				<div class="support" v-if="seller.supports">
-					<span class="icon" :class="classMap[seller.supports[1].type]"></span>
-					<span class="text">{{seller.supports[1].description}}</span>
+				<div class="support" v-if="sellerInfo.supports">
+					<span class="icon" :class="classMap[sellerInfo.supports[1].type]"></span>
+					<span class="text">{{sellerInfo.supports[1].description}}</span>
 				</div>
 			</div>
-			<div v-if="seller.supports" class="support-count" @touchstart="showDetail()">
-				<span class="count">{{seller.supports.length}}</span>
+			<div v-if="sellerInfo.supports" class="support-count" @touchstart="showDetail()">
+				<span class="count">{{sellerInfo.supports.length}}</span>
 				<i></i>
 			</div>
 		</div>
 		<div class="bulletin-wrapper" @touchstart="showDetail()">
-			<span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+			<span class="bulletin-title"></span><span class="bulletin-text">{{sellerInfo.bulletin}}</span>
 			<i></i>
 		</div>
 		<div class="background">
-			<img :src="seller.avatar" width="100%" height="100%" alt="">
+			<img :src="sellerInfo.avatar" width="100%" height="100%" alt="">
 		</div>
 		<div v-show="detailShow" class="detail">
 			<div class="detail-wrapper clearfix">
 				<div class="detail-main">
-					<h1 class="name">{{seller.name}}</h1>
+					<h1 class="name">{{sellerInfo.name}}</h1>
 					<div class="star-wrapper">
-						<star :size="48" :score="seller.score"></star>
+						<star :size="48" :score="sellerInfo.score"></star>
 					</div>
 					<div class="title">
 						<div class="line"></div>
 						<div class="text">优惠信息</div>
 						<div class="line"></div>
 					</div>
-					<ul v-if="seller.supports" class="supports">
-						<li class="support-item" v-for="(item, index) in seller.supports">
+					<ul v-if="sellerInfo.supports" class="supports">
+						<li class="support-item" v-for="(item, index) in sellerInfo.supports">
 							<span class="icon" :class="classMap[index]"></span>
 							<span class="text">{{item.description}}</span>
 						</li>
@@ -53,7 +53,7 @@
 						<div class="line"></div>
 					</div>
 					<div class="bulletin">
-						<p class="content">{{seller.bulletin}}</p>
+						<p class="content">{{sellerInfo.bulletin}}</p>
 					</div>
 				</div>
 			</div>
@@ -64,42 +64,38 @@
 	</div>
 </template>
 <script>
+/* eslint-disable */
+	import { mapGetters } from 'vuex'
 	import star from '@/components/star/star.vue'
-	/* eslint-disable */
+	
 	export default {
-		props: {
-			seller: {
-				type: Object
-			}
-		},
+		// props: {
+		// 	seller: {
+		// 		type: Object
+		// 	}
+		// },
 		data () {
 			return {
-				//seller: {},
 				detailShow: false
 			}
 		},
+		computed: mapGetters([
+			'sellerInfo'
+		]),
 		created () {
-			// let _this = this;
-			// this.$axios.get('static/json/data.json').then((res) => {
-			// 	_this.seller = res.data.seller
-			// 	// console.log(res)
-			// })
-			// .catch((err) => {
-			// 	console.log(err)
-			// })
 			this.classMap = ['decrease','discount','guarantee','invoice','special']
-	  },
-	  methods: {
-	  	showDetail() {
-	  		this.detailShow = true;
 	  	},
-	  	hideDetail() {
-	  		this.detailShow = false;
-	  	}
-	  },
-	  components: {
-	  	star
-	  }
+		methods: {
+			showDetail() {
+				this.detailShow = true;
+			},
+			hideDetail() {
+				this.detailShow = false;
+			}
+		},
+		components: {
+			star
+		}
 	}
 </script>
 <style lang="less" rel="stylesheet/less">
@@ -129,6 +125,7 @@
 				display: inline-block;
 				font-size: 14px;
 				margin-left: 16px;
+				text-align: left;
 				.title {
 					margin: 2px 0 8px 0;
 					.brand {

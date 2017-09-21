@@ -2,19 +2,19 @@
 	<div class="goods">
 		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
-				<li v-for="(item, index) in goods" class="menu-item" :class="{'current':currentIndex === index}" @touchstart=selectMenu(index)>
+				<li v-for="(item, index) in goodsData" class="menu-item" :class="{'current':currentIndex === index}" @click=selectMenu(index)>
 					<span class="text border-1px">
 						<span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
 					</span>
 				</li>
 			</ul>
 		</div>
-		<div class="foods-wrapper" ref="foodsWrapper">
+		<div class="foods-wrapper" ref="foodsWrapper" @scroll="scroll()">
 			<ul>
-				<li v-for="item in goods" class="food-list food-list-hook">
+				<li v-for="item in goodsData" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li @tab="selectFood(food, $event)" v-for="(food, index1) in item.foods" class="food-item border-1px">
+						<li @click="selectFood(food, $event)" v-for="(food, index) in item.foods" class="food-item border-1px">
 							<div class="icon">
 								<img width="57" height="57" :src="food.icon" alt="">
 							</div>
@@ -28,116 +28,141 @@
 								<div class="price">
 									<span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 								</div>
-								<div class="cartcontrol-wrapper">
+								<!-- <div class="cartcontrol-wrapper">
 									<vCartcontrol :food="food" @change="change(index1)"></vCartcontrol>
-								</div>
+								</div> -->
 							</div>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</div>
-		<vShopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"></vShopcart>
-		<vFood :food="selectedFood" ref="food"></vFood>
+		<!-- <vShopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"></vShopcart> -->
+		<!-- <vFood :food="selectedFood" ref="food"></vFood> -->
 	</div>
 </template>
 <script>
 	/* eslint-disable */
+	import { mapGetters } from 'vuex'
 	import Vue from 'vue'
 	import BScroll from 'better-scroll'
 	import shopcart from '@/components/shopcart/shopcart.vue'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	import food from '@/components/food/food.vue'
 	export default {
-		props: {
-			seller: {
-				type: Object
-			}
-		},
 		data() {
 			return {
-				goods: [],
 				listHeight: [],
 				scrollY: 0,
 				selectedFood: {},
 				classMap: ['decrease','discount','guarantee','invoice','special']
 			}
 		},
-		computed: {
-			currentIndex() {
-				for(let i=0;i<this.listHeight.length;i++) {
-					let height1 = this.listHeight[i]
-					let height2 = this.listHeight[i+1]
-					if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-						return i
-					}
-				}
-				return 0
-			},
-			selectFoods() {
-				let foods = []
-				// this.goods.forEach((good) => {
-				// 	good.foods.forEach((food) => {
-				// 		if (food.count) {
-				// 			foods.push(food)
-				// 		}
-				// 	})
-				// })
-				for(let i=0;i<this.goods.length;i++) {
-					// this.goods[key].foods
-					for(let j=0;j<this.goods[i].foods.length;j++) {
-						if(this.goods[i].foods[j].count) {
-							foods.push(this.goods[i].foods[j])
-							//console.log(foods)
-						}
-					}
-				}
-				return foods
-			}
-		},
+		computed: mapGetters([
+			'sellerInfo','goodsData','currentIndex'
+		]),
+		// computed: {
+		// 	currentIndex() {
+		// 		for(let i=0;i<this.listHeight.length;i++) {
+		// 			let height1 = this.listHeight[i]
+		// 			let height2 = this.listHeight[i+1]
+		// 			if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+		// 				return i
+		// 			}
+		// 		}
+		// 		return 0
+		// 	},
+		// 	selectFoods() {
+		// 		let foods = []
+
+		// 		for(let i=0;i<this.goods.length;i++) {
+		// 			for(let j=0;j<this.goods[i].foods.length;j++) {
+		// 				if(this.goods[i].foods[j].count) {
+		// 					foods.push(this.goods[i].foods[j])
+		// 					//console.log(foods)
+		// 				}
+		// 			}
+		// 		}
+		// 		return foods
+		// 	}
+		// },
 		created() {
-			let _this = this
-			this.$axios.get('static/json/data.json').then((res) => {
-				_this.goods = res.data.goods
-				_this.$nextTick(() => {
-					_this._initScroll()
-					_this._calculateHeight()
-				})
+			// let _this = this
+			// this.$axios.get('static/json/data.json').then((res) => {
+			// 	_this.goods = res.data.goods
+			// 	_this.$nextTick(() => {
+			// 		_this._initScroll()
+			// 		_this._calculateHeight()
+			// 	})
+			// })
+			// .catch((err) => {
+			// 	console.log(err)
+			// })
+			this.$store.dispatch('getGoodsData')
+			this.$nextTick(() => {
+				this._initScroll()
+				// this._calculateHeight()
 			})
-			.catch((err) => {
-				console.log(err)
-			})
-			//setTimeout(_this._initScroll(), 0)
-			//console.log(_this.$refs.foods-wrapper)
 		},
 		methods: {
 			_initScroll() {
-				this.menuScroll = new BScroll(this.$refs.menuWrapper, {})
+				console.log(1)
+				this._calculateHeight()
+
+				this.menuScroll = new BScroll(this.$refs.menuWrapper, {click:true})
 				this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+					click: true,
 					probeType: 3
 				})
 				this.foodsScroll.on('scroll' ,(pos)=> {
 					this.scrollY = Math.abs(Math.round(pos.y))
+					
+					let scrollData = {
+						scrollY: this.scrollY,
+						listHeight: this.listHeight
+					}
+					console.log(scrollData)
+					this.$store.dispatch('scrollCurIndex', scrollData)
 				})
 			},
 			_calculateHeight() {
-				let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+
+				// let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+				
+				let foodList = document.getElementsByClassName('foods-wrapper')[0];
+				foodList = foodList.getElementsByClassName('food-list-hook');
+
 				let height = 0
 				this.listHeight.push(height)
+				// for(var ele in foodList){
+				// 	console.log(ele)
+				// 	let item = ele
+				// 	height += item.clientHeight
+				// 	this.listHeight.push(height)
+				// }
+				console.log(foodList.length, foodList)
 				for(let i=0;i<foodList.length;i++) {
 					let item = foodList[i]
 					height += item.clientHeight
 					this.listHeight.push(height)
 				}
+				console.log(this.listHeight)
+				// this.$store.dispatch('scrollCurIndex', this.listHeight, this.scrollY)
+				
+				// this._initScroll()
 			},
 			selectMenu(index) {
-				//console.log(1)
 				let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
 				let el = foodList[index]
 				this.foodsScroll.scrollToElement(el, 300)
+				this.$store.dispatch('changeCurIndex', index)
 			},
 			change(index) {
 				// this.goods[index].foods[index1].count++
+			},
+			scroll() {
+				console.log(1)
+				this.$store.dispatch('scrollCurIndex', this.listHeight, this.scrollY)
 			},
 			selectFood(food, event) {
 				this.selectedFood = food
@@ -177,10 +202,10 @@
 	}
 	.goods {
 		display: flex;
-		// position: absolute;
-		// top: 174px;
+		position: absolute;
+		top: 174px;
 		width: 100%;
-		// bottom: 46px;
+		bottom: 46px;
 		overflow: hidden;
 		.menu-wrapper {
 			flex: 0 0 80px;
