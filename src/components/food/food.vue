@@ -1,38 +1,38 @@
 <template>
-	<div v-show="showFlag" ref="food" class="food">
+	<div ref="food" v-show='isShowFoodDetail' class="food">
 		<div class="food-content">
 			<div class="image-header">
-				<img :src="food.image" alt="">
+				<img :src="foodData.image" alt="">
 				<div @touchstart="hide()" class="go-back">
 					<i><</i>
 				</div>
 			</div>
 			<div class="content">
-				<h1 class="title">{{food.name}}</h1>
+				<h1 class="title">{{foodData.name}}</h1>
 				<div class="detail">
-					<span class="sell-count">月售{{food.sellCount}}份</span>
-					<span class="rating">好评率:{{food.rating}}%</span>
+					<span class="sell-count">月售{{foodData.sellCount}}份</span>
+					<span class="rating">好评率:{{foodData.rating}}%</span>
 				</div>
 				<div class="price">
-					<span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
+					<span class="now">￥{{foodData.price}}</span><span class="old" v-show="foodData.oldPrice">￥{{foodData.oldPrice}}</span>
 				</div>
 				<div class="cartcontrol-wrapper">
-					<vCartcontrol :food="food"></vCartcontrol>
+					<!-- <vCartcontrol :food="food"></vCartcontrol> -->
 				</div>
-				<div @touch="addFirst($event)" class="buy" v-show="!food.count || food.count===0">加入购物车</div>
+				<div @touch="addFirst($event)" class="buy" v-show="!foodData.count || foodData.count===0">加入购物车</div>
 			</div>
-			<vSplit v-show="food.info"></vSplit>
-			<div class="info" v-show="food.info">
+			<vSplit v-show="foodData.info"></vSplit>
+			<div class="info" v-show="foodData.info">
 				<h1 class="title">商品信息</h1>
-				<p class="text">{{food.info}}</p>
+				<p class="text">{{foodData.info}}</p>
 			</div>
 			<vSplit></vSplit>
 			<div class="rating">
 				<h1 class="title">商品评价</h1>
-				<vRating :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></vRating>
+				<!-- <vRating :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="foodData.ratings"></vRating> -->
 				<div class="rating-wrapper">
-					<ul v-show="food.ratings && food.ratings.length">
-						<li v-show="needShow(rating.rateType, rating.text)" v-for="rating in food.ratings" class="rating-item">
+					<ul v-show="foodData.ratings && foodData.ratings.length">
+						<li v-show="needShow(rating.rateType, rating.text)" v-for="rating in foodData.ratings" class="rating-item">
 							<div class="user">
 								<span class="name">{{rating.username}}</span>
 								<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
@@ -43,7 +43,7 @@
 							</p>
 						</li>
 					</ul>
-					<div class="no-rating" v-show="!food.ratings || food.ratings.length"></div>
+					<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
 				</div>
 			</div>
 		</div>
@@ -52,22 +52,17 @@
 <script>
 	/* eslint-disable */
 	import Vue from 'vue'
+	import {mapGetters} from 'vuex'
 	import BScroll from 'better-scroll'
 	import split from '@/components/split/split.vue'
 	import rating from '@/components/ratings/rating.vue'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	const POSITIVE = 0,
-				NEGATIVE = 1,
-				ALL =2
+			NEGATIVE = 1,
+			ALL =2
 	export default {
-		props: {
-			food: {
-				type: Object
-			}
-		},
 		data() {
 			return {
-				showFlag: false,
 				selectType: ALL,
 				onlyContent: true,
 				desc: {
@@ -77,21 +72,43 @@
 				}
 			}
 		},
+		beforeCreate() {
+			let foodsId = this.$route.query.foodsId,
+				foodsIndex = this.$route.query.foodsIndex,
+				foodsParma = {
+					foodsId: foodsId,
+					foodsIndex: foodsIndex
+				}
+			let _this = this
+			this.$store.dispatch('getFoodInfo', foodsParma).then(function(){
+				_this.$nextTick(() => {
+					if (!_this.sroll) {
+						_this.scroll =new BScroll(_this.$refs.food)
+					} else {
+						_this.scroll.refresh()
+					}
+				})
+			})
+		},
+		computed: mapGetters([
+			'foodData','isShowFoodDetail'
+		]),
 		methods: {
 			show() {
 				this.showFlag = true
 				this.selectType = ALL
 				this.onlyContent = true
-				this.$nextTick(() => {
-					if (!this.sroll) {
-						this.scroll =new BScroll(this.$refs.food)
-					} else {
-						this.scroll.refresh()
-					}
-				})
+				// this.$nextTick(() => {
+				// 	if (!this.sroll) {
+				// 		this.scroll =new BScroll(this.$refs.food)
+				// 	} else {
+				// 		this.scroll.refresh()
+				// 	}
+				// })
 			},
 			hide() {
-				this.showFlag = false
+				this.$store.dispatch('hideFoodDetail')
+				this.$router.go(-1)
 			},
 			addFirst(event) {
 				Vue.set(this.food, 'count', 1)

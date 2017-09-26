@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Goods from '@/components/goods/goods.vue'
 import Comment from '@/components/comment/comment.vue'
 import Seller from '@/components/seller/seller.vue'
+import Food from '@/components/food/food.vue'
 
 Vue.use(Router)
 /* eslint-disable */
@@ -24,6 +25,10 @@ export default new Router({
 		{
 			path: '/seller',
 			component: Seller
+		},
+		{
+			path: '/foodDetail',
+			component: Food
 		}
 	]
 })

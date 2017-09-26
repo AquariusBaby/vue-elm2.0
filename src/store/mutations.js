@@ -4,7 +4,10 @@ import getters from './getters.js'
 const state = {
 	sellerInfo: null,
 	goodsData: null,
-	currentIndex: 0
+	currentIndex: 0,
+	foodData: null,
+	isShowFoodDetail: false,
+	foodsId: 0
 }
 
 const mutations = {
@@ -18,6 +21,7 @@ const mutations = {
 		state.currentIndex = index
 	},
 	scrollCurIndex(state, scrollData) {
+		//这个方法要不要提到外面去
 		function curIndex() {
 			for(let i=0;i<scrollData.listHeight.length;i++) {
 				let height1 = scrollData.listHeight[i]
@@ -29,6 +33,26 @@ const mutations = {
 			return 0
 		}
 		state.currentIndex = curIndex()
+	},
+	getFoodDetail(state, foodsId) {
+		state.foodsId = foodsId
+		state.isShowFoodDetail = true
+	},
+	hideFoodDetail(state) {
+		state.isShowFoodDetail = false
+	},
+	getFoodInfo(state, data) {
+		let foodsIndex = data.foodsParma.foodsIndex,
+			foodsId = data.foodsParma.foodsId,
+			dataIndex = data.data
+		dataIndex = dataIndex[foodsIndex].foods
+
+		for(let i=0,len=dataIndex.length; i < len; i++) {
+			if(dataIndex[i].foodsId == foodsId){
+				state.foodData = dataIndex[i]
+				break
+			}
+		}
 	}
 }
 

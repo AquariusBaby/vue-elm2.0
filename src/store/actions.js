@@ -5,7 +5,6 @@ export default {
 		axios.get('static/json/data.json')
 		.then(
 			function(res) {
-				// console.log(res.data.seller)
 				commit('getSllerInfo', {data: res.data.seller})
 			},
 			function(err) {
@@ -17,7 +16,8 @@ export default {
 		})
 	},
 	getGoodsData: ({commit}) => {
-		axios.get('static/json/data.json')
+		//返回一个axios对象，axios是基于promise的，所以可以使用.then().catch()
+		return axios.get('static/json/foodList.json')
 		.then(
 			function(res) {
 				// console.log(res.data.seller)
@@ -36,5 +36,25 @@ export default {
 	},
 	scrollCurIndex: ({commit}, scrollData) => {
 		commit('scrollCurIndex', scrollData)
+	},
+	getFoodDetail: ({commit}, foodsId) => {
+		commit('getFoodDetail', foodsId)
+	},
+	hideFoodDetail: ({commit}) => {
+		commit('hideFoodDetail')
+	},
+	getFoodInfo: ({commit}, foodsParma) => {
+		return axios.get('static/json/foodList.json?foodsId=' + foodsParma.foodsId + '&foodsIndex=' + foodsParma.foodsIndex)
+		.then(
+			function(res) {
+				commit('getFoodInfo', {data: res.data.goods,foodsParma: foodsParma})
+			},
+			function(err) {
+				console.log(err.type);
+		})
+		.catch(
+			function(err) {
+				console.log(err)
+		})
 	}
 }

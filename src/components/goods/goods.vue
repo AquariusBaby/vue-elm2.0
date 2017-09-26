@@ -11,10 +11,10 @@
 		</div>
 		<div class="foods-wrapper" ref="foodsWrapper" @scroll="scroll()">
 			<ul>
-				<li v-for="item in goodsData" class="food-list food-list-hook">
+				<li v-for="(item, typeIndex) in goodsData" ref="foodList" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li @click="selectFood(food, $event)" v-for="(food, index) in item.foods" class="food-item border-1px">
+						<li @click="getFoodDetail(food.foodsId, typeIndex, $event)" v-for="(food, index) in item.foods" class="food-item border-1px">
 							<div class="icon">
 								<img width="57" height="57" :src="food.icon" alt="">
 							</div>
@@ -38,7 +38,7 @@
 			</ul>
 		</div>
 		<!-- <vShopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"></vShopcart> -->
-		<!-- <vFood :food="selectedFood" ref="food"></vFood> -->
+		<vFood ref="food"></vFood>
 	</div>
 </template>
 <script>
@@ -62,16 +62,6 @@
 			'sellerInfo','goodsData','currentIndex'
 		]),
 		// computed: {
-		// 	currentIndex() {
-		// 		for(let i=0;i<this.listHeight.length;i++) {
-		// 			let height1 = this.listHeight[i]
-		// 			let height2 = this.listHeight[i+1]
-		// 			if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-		// 				return i
-		// 			}
-		// 		}
-		// 		return 0
-		// 	},
 		// 	selectFoods() {
 		// 		let foods = []
 
@@ -87,72 +77,46 @@
 		// 	}
 		// },
 		created() {
-			// let _this = this
-			// this.$axios.get('static/json/data.json').then((res) => {
-			// 	_this.goods = res.data.goods
-			// 	_this.$nextTick(() => {
-			// 		_this._initScroll()
-			// 		_this._calculateHeight()
-			// 	})
-			// })
-			// .catch((err) => {
-			// 	console.log(err)
-			// })
-			this.$store.dispatch('getGoodsData')
-			this.$nextTick(() => {
-				this._initScroll()
-				// this._calculateHeight()
+			let _this = this
+			this.$store.dispatch('getGoodsData').then(function(){
+				_this.$nextTick(() => {
+					_this._initScroll()
+					_this._calculateHeight()
+				})
 			})
 		},
 		methods: {
 			_initScroll() {
-				console.log(1)
-				this._calculateHeight()
-
 				this.menuScroll = new BScroll(this.$refs.menuWrapper, {click:true})
 				this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
 					click: true,
 					probeType: 3
 				})
 				this.foodsScroll.on('scroll' ,(pos)=> {
-					this.scrollY = Math.abs(Math.round(pos.y))
-					
-					let scrollData = {
-						scrollY: this.scrollY,
-						listHeight: this.listHeight
+					// 判断滑动方向，避免下拉时分类高亮错误（如第一分类商品数量为1时，下拉使得第二分类高亮）
+					if (pos.y <= 0) {
+						this.scrollY = Math.abs(Math.round(pos.y));
+						let scrollData = {
+							scrollY: this.scrollY,
+							listHeight: this.listHeight
+						}
+						this.$store.dispatch('scrollCurIndex', scrollData)
 					}
-					console.log(scrollData)
-					this.$store.dispatch('scrollCurIndex', scrollData)
 				})
 			},
 			_calculateHeight() {
-
-				// let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
-				
-				let foodList = document.getElementsByClassName('foods-wrapper')[0];
-				foodList = foodList.getElementsByClassName('food-list-hook');
-
+				let foodList = this.$refs.foodList
 				let height = 0
 				this.listHeight.push(height)
-				// for(var ele in foodList){
-				// 	console.log(ele)
-				// 	let item = ele
-				// 	height += item.clientHeight
-				// 	this.listHeight.push(height)
-				// }
-				console.log(foodList.length, foodList)
+
 				for(let i=0;i<foodList.length;i++) {
 					let item = foodList[i]
 					height += item.clientHeight
 					this.listHeight.push(height)
 				}
-				console.log(this.listHeight)
-				// this.$store.dispatch('scrollCurIndex', this.listHeight, this.scrollY)
-				
-				// this._initScroll()
 			},
 			selectMenu(index) {
-				let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+				let foodList = this.$refs.foodList
 				let el = foodList[index]
 				this.foodsScroll.scrollToElement(el, 300)
 				this.$store.dispatch('changeCurIndex', index)
@@ -160,13 +124,9 @@
 			change(index) {
 				// this.goods[index].foods[index1].count++
 			},
-			scroll() {
-				console.log(1)
-				this.$store.dispatch('scrollCurIndex', this.listHeight, this.scrollY)
-			},
-			selectFood(food, event) {
-				this.selectedFood = food
-				this.$refs.food.show()
+			getFoodDetail(foodsId, index, event) {
+				this.$store.dispatch('getFoodDetail')
+				this.$router.push({path: '/foodDetail', query: { foodsId: foodsId, foodsIndex: index }})
 			}
 		},
 		components: {
@@ -307,7 +267,7 @@
 					.extra {
 						line-height: 10px;
 						.count {
-							margin-left: 12px;
+							text-align: left;
 						}
 					}
 					.price {
