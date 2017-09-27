@@ -38,7 +38,7 @@ export default {
   // computed: mapGetters([
   //   'seller'
   // ]),
-  created() {
+  beforeCreate() {
     this.$store.dispatch('getSllerInfo')
   }
 }

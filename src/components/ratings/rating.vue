@@ -1,49 +1,55 @@
 <template>
+<div>
 	<div class="rating">
 		<div class="rating-type">
-			<span @touchstart="select(2, $event)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
-			<span class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
-			<span class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{negative.length}}</span></span>
+			<span @touchstart="select()" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{foodData.ratings.length}}</span></span>
+			<span class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{foodData.ratings.length}}</span></span>
+			<span class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{foodData.ratings.length}}</span></span>
 		</div>
 		<div @touchstart="toggleContent($event)" class="switch" :class="{'on':onlyContent}">
 			<span></span>
 			<span class="text">只看有内容的评价</span>
 		</div>
 	</div>
+	<div class="rating-wrapper">
+		<ul v-show="foodData.ratings && foodData.ratings.length">
+			<li v-for="rating in foodData.ratings" class="rating-item">
+				<div class="user">
+					<span class="name">{{rating.username}}</span>
+					<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
+				</div>
+				<div class="time">{{rating.rateTime}}</div>
+				<p class="text">
+					<span></span>{{rating.text}}
+				</p>
+			</li>
+		</ul>
+		<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
+	</div>
+</div>
 </template>
 <script>
 	/* eslint-disable */
 	const POSITIVE = 0,
-				NEGATIVE = 1,
-				ALL =2
+			NEGATIVE = 1,
+			ALL =2
+	import {mapGetters} from 'vuex'
 	export default {
-		props: {
-			ratings: {
-				type: Array,
-				default() {
-					return []
-				}
-			},
-			selectType: {
-				type: Number,
-				default: ALL
-			},
-			onlyContent: {
-				type: Boolean,
-				default: false
-			},
-			desc: {
-				type: Object,
-				default() {
-					return {
-						all: '全部',
-						positive: '满意',
-						negative: '不满意'
-					}
+		data() {
+			return {
+				selectType : 2,
+				onlyContent: true,
+				desc: {
+					all: '全部',
+					positive: '推荐',
+					negative: '吐槽'
 				}
 			}
 		},
-		computed: {
+		computed: mapGetters([
+			'foodData'
+		]),
+		/*computed: {
 			positives() {
 				return this.ratings.filter((rating) => {
 					return rating.rateType === POSITIVE
@@ -54,13 +60,13 @@
 					return rating.rateType === NEGATIVE
 				})
 			}
-		},
+		},*/
 		methods: {
 			select(type, event) {
-				this.selectType = type
+				// this.selectType = type
 			},
 			toggleContent(event) {
-				this.onlyContent =!this.onlyContent
+				// this.onlyContent =!this.onlyContent
 			}
 		}
 	}
@@ -120,6 +126,52 @@
 			&.text {
 				font-size: 12px;
 			}
+		}
+	}
+	.rating-wrapper {
+		padding: 0 18px;
+		.rating-item {
+			position: relative;
+			padding: 16px 0;
+			border-bottom: 1px solid #f3f5f7;
+			.user {
+				position: absolute;
+				right: 0;
+				top: 16px;
+				font-size: 0;
+				line-height: 12px;
+				.name {
+					display: inline-block;
+					vertical-align: top;
+					font-size: 10px;
+					color: rgb(147, 153, 159);
+					margin-right: 6px;
+				}
+				.avatar {
+					border-radius: 50%;
+				}
+			}
+			.time {
+				line-height: 12px;
+				font-size: 10px;
+				color: rgb(147, 153, 159);
+				margin-bottom: 6px;
+			}
+			.text {
+				line-height: 16px;
+				font-size: 12px;
+				color: rgb(7, 17, 27);
+				> i {
+					line-height: 16px;
+					margin-right: 4px;
+					font-size: 12px;
+				}
+			}
+		}
+		.no-rating {
+			padding: 16px 0;
+			font-size: 12px;
+			color: rgb(147, 153, 159);
 		}
 	}
 </style>

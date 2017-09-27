@@ -29,22 +29,7 @@
 			<vSplit></vSplit>
 			<div class="rating">
 				<h1 class="title">商品评价</h1>
-				<!-- <vRating :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="foodData.ratings"></vRating> -->
-				<div class="rating-wrapper">
-					<ul v-show="foodData.ratings && foodData.ratings.length">
-						<li v-show="needShow(rating.rateType, rating.text)" v-for="rating in foodData.ratings" class="rating-item">
-							<div class="user">
-								<span class="name">{{rating.username}}</span>
-								<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
-							</div>
-							<div class="time">{{rating.rateTime}}</div>
-							<p class="text">
-								<span></span>{{rating.text}}
-							</p>
-						</li>
-					</ul>
-					<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
-				</div>
+				<vRating></vRating>
 			</div>
 		</div>
 	</div>
@@ -61,17 +46,6 @@
 			NEGATIVE = 1,
 			ALL =2
 	export default {
-		data() {
-			return {
-				selectType: ALL,
-				onlyContent: true,
-				desc: {
-					all: '全部',
-					positive: '推荐',
-					negative: '吐槽'
-				}
-			}
-		},
 		beforeCreate() {
 			let foodsId = this.$route.query.foodsId,
 				foodsIndex = this.$route.query.foodsIndex,
@@ -96,39 +70,15 @@
 		methods: {
 			show() {
 				this.showFlag = true
-				this.selectType = ALL
-				this.onlyContent = true
-				// this.$nextTick(() => {
-				// 	if (!this.sroll) {
-				// 		this.scroll =new BScroll(this.$refs.food)
-				// 	} else {
-				// 		this.scroll.refresh()
-				// 	}
-				// })
 			},
 			hide() {
 				this.$store.dispatch('hideFoodDetail')
 				this.$router.go(-1)
 			},
-			addFirst(event) {
-				Vue.set(this.food, 'count', 1)
-			},
-			needShow(type, text) {
-				if (this.onlyContent && !text) {
-					return false
-				}
-				if (this.selectType === ALL) {
-					return true
-				} else {
-					return type === this.selectType
-				}
+			addFirst() {
+
 			}
 		},
-		// filters: {
-		// 	formatData(time) {
-				
-		// 	}
-		// },
 		components: {
 			'vCartcontrol': cartcontrol,
 			'vSplit': split,
@@ -172,6 +122,7 @@
 				}
 			}
 			.content {
+				position: relative;
 				padding: 18px;
 				text-align: left;
 				.title {
@@ -248,8 +199,9 @@
 				padding-top: 18px;
 				.title {
 					line-height: 14px;
-					margin-left: 6px;
+					margin-left: 18px;
 					font-size: 14px;
+					font-weight: 600;
 					color: rgb(7, 17, 27);
 				}
 				.rating-wrapper {

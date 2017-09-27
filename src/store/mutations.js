@@ -2,10 +2,10 @@
 import getters from './getters.js'
 
 const state = {
-	sellerInfo: null,
+	sellerInfo: {avatar: 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg'},
 	goodsData: null,
 	currentIndex: 0,
-	foodData: null,
+	foodData: {image: 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg'},
 	isShowFoodDetail: false,
 	foodsId: 0
 }
@@ -50,6 +50,7 @@ const mutations = {
 		for(let i=0,len=dataIndex.length; i < len; i++) {
 			if(dataIndex[i].foodsId == foodsId){
 				state.foodData = dataIndex[i]
+				console.log(state.foodData)
 				break
 			}
 		}
