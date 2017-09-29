@@ -17,13 +17,13 @@
       <!-- <router-view :seller="seller"></router-view> -->
       <router-view></router-view>
     </div>
-    <div class="cover" v-show="0"></div>
+    <div class="cover" v-show="isCover"></div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-// import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import vHeader from './components/header/header.vue'
 export default {
   name: 'app',
@@ -35,9 +35,9 @@ export default {
       // seller: {}
     }
   },
-  // computed: mapGetters([
-  //   'seller'
-  // ]),
+  computed: mapGetters([
+    'isCover'
+  ]),
   beforeCreate() {
     this.$store.dispatch('getSllerInfo')
   }

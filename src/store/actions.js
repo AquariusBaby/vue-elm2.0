@@ -56,5 +56,11 @@ export default {
 			function(err) {
 				console.log(err)
 		})
+	},
+	addCar: ({commit}, foodItem) => {
+		commit('addCar', foodItem)
+	},
+	isCover: ({commit}, isCover) => {
+		commit('addCar', isCover)
 	}
 }

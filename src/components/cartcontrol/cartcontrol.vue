@@ -1,39 +1,53 @@
 <template>
 	<div class="cartcontrol">
-		<div class="decrease" @click.stop='decCart()' v-show="food.count>0">-</div>
-		<div class="count" v-show="food.count>0">{{food.count}}</div>
+		<div class="decrease" @click.stop='decCart()' v-show="count>0">-</div>
+		<div class="count" v-show="count>0">{{count}}</div>
 		<div class="increase" @click.stop='addCart($event)'>+</div>
 	</div>
 </template>
 <script>
 	/* eslint-disable */
-	import Vue from 'vue'
+	// import Vue from 'vue'
+	import {mapGetters} from 'vuex'
 	export default {
 		props: {
-			food: {
-				type: Object
+			foodsId: {
+				type: Number
+			},
+			typeIndex: {
+				type: Number
+			},
+			foodPrice: {
+				type: Number
+			},
+			foodName: {
+				type: String
 			}
 		},
-		// data() {
-		// 	return {
-		// 		food: {
-		// 			count: 1
-		// 		}
-		// 	}
-		// },
+		data() {
+			return {
+				count: 0
+			}
+		},
 		methods: {
 			addCart(event) {
-				// if (!event._constructed) {
-				// 	return ;
-				// }
-				if (!this.food.count) {
-					//console.log(this.food)
-					Vue.set(this.food, 'count', 1)
-					// this.food.count = 1
+				/* if (!this.food.count) {
+					// Vue.set(this.food, 'count', 1)
 				} else {
 					this.food.count++
+				} */
+				/*console.log(event.taraget)
+				let countEle = event.target.previousElementSibling
+				console.log(countEle.parentNode.parentNode)*/
+				this.count++
+				let foodItem = {
+					foodsId: this.foodsId,
+					typeIndex: this.typeIndex,
+					foodPrice: this.foodPrice,
+					foodName: this.foodName,
+					count: this.count
 				}
-				// console.log(Vue)
+				this.$store.dispatch('addCar', foodItem)
 			},
 			decCart() {
 				if(this.food.count) {

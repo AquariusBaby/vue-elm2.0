@@ -16,24 +16,24 @@
 					{{payDesc}}
 				</div>
 			</div>
-			<div class="ball-container">
+			<!-- <div class="ball-container">
 				<div v-for="ball in balls" v-show="ball.show" class="ball"></div>
 				<div class="inner"></div>
-			</div>
-			<div class="shopcart-list" v-show="listShow">
+			</div> -->
+			<div class="shopcart-list" v-show="listShow && (totalCount>0)">
 				<div class="list-header">
 					<h1 class="title">购物车</h1>
 					<span class="empty" @touchstart="empty()">清空</span>
 				</div>
 				<div class="list-content" ref="listContent">
 					<ul>
-						<li class="food" v-for="food in selectFoods">
-							<span class="name">{{food.name}}</span>
+						<li class="food" v-for="item in foodCar">
+							<span class="name">{{item.foodName}}</span>
 							<div class="price">
-								<span>￥{{food.price*food.count}}</span>
+								<span>￥{{item.foodPrice*item.count}}</span>
 							</div>
 							<div class="cartcontrol-wrapper">
-								<vCartcontrol :food="food"></vCartcontrol>
+								<!-- <vCartcontrol :food="food"></vCartcontrol> -->
 							</div>
 						</li>
 					</ul>
@@ -44,10 +44,11 @@
 </template>
 <script>
 	/* eslint-disable */
+	import {mapGetters} from 'vuex'
 	import BScroll from 'better-scroll'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	export default {
-		props: {
+		/*props: {
 			deliveryPrice: {
 				type: Number,
 				default: 0
@@ -59,7 +60,7 @@
 			selectFoods: {
 				type: Array
 			}
-		},
+		},*/
 		data() {
 			return {
 				balls: [
@@ -79,10 +80,15 @@
 						show: false
 					}
 				],
-				fold: true
+				fold: true,
+				deliveryPrice: 4,
+				listShow: false
 			}
 		},
-		computed: {
+		computed: mapGetters([
+			'payDesc','totalPrice','totalCount','foodCar','payClass'
+		]),
+		/*computed: {
 			totalPrice() {
 				let total = 0
 				for(let i=0;i<this.selectFoods.length;i++) {
@@ -133,16 +139,21 @@
 				}
 				return show
 			}
-		},
+		},*/
 		methods: {
 			toggleList() {
-				if(!this.totalCount) {
-					return false
+				/*if(!this.totalCount) {
+					this.listShow = false
+					return
 				}
-				this.fold = !this.fold
+				//this.fold = !this.fold*/
+				this.listShow = !this.listShow
+				let isCover = !!(listShow && (totalCount>0))
+				this.$store.dispatch('isCover', isCover)
 			},
 			empty() {
 				//this.selectFoods.
+				this.listShow = false
 			}
 		},
 		components: {

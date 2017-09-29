@@ -28,9 +28,10 @@
 								<div class="price">
 									<span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 								</div>
-								<!-- <div class="cartcontrol-wrapper">
-									<vCartcontrol :food="food" @change="change(index1)"></vCartcontrol>
-								</div> -->
+								<div class="cartcontrol-wrapper">
+									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" @change="change(index1)"></vCartcontrol> -->
+									<vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name"></vCartcontrol>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -38,6 +39,7 @@
 			</ul>
 		</div>
 		<!-- <vShopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"></vShopcart> -->
+		<vShopcart></vShopcart>
 		<vFood ref="food"></vFood>
 	</div>
 </template>

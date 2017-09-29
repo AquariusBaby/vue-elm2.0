@@ -2,9 +2,9 @@
 <div>
 	<div class="rating">
 		<div class="rating-type">
-			<span @touchstart="select()" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{foodData.ratings.length}}</span></span>
-			<span class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{foodData.ratings.length}}</span></span>
-			<span class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{foodData.ratings.length}}</span></span>
+			<span @touchstart="select(2)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{foodData.ratings.length}}</span></span>
+			<span @touchstart="select(0)" class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{positive}}</span></span>
+			<span @touchstart="select(1)" class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{negative}}</span></span>
 		</div>
 		<div @touchstart="toggleContent($event)" class="switch" :class="{'on':onlyContent}">
 			<span></span>
@@ -13,7 +13,7 @@
 	</div>
 	<div class="rating-wrapper">
 		<ul v-show="foodData.ratings && foodData.ratings.length">
-			<li v-for="rating in foodData.ratings" class="rating-item">
+			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
 				<div class="user">
 					<span class="name">{{rating.username}}</span>
 					<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
@@ -47,26 +47,14 @@
 			}
 		},
 		computed: mapGetters([
-			'foodData'
+			'foodData','positive','negative'
 		]),
-		/*computed: {
-			positives() {
-				return this.ratings.filter((rating) => {
-					return rating.rateType === POSITIVE
-				})
-			},
-			negative() {
-				return this.ratings.filter((rating) => {
-					return rating.rateType === NEGATIVE
-				})
-			}
-		},*/
 		methods: {
-			select(type, event) {
-				// this.selectType = type
+			select(type) {
+				this.selectType = type
 			},
 			toggleContent(event) {
-				// this.onlyContent =!this.onlyContent
+				this.onlyContent =!this.onlyContent
 			}
 		}
 	}
