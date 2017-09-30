@@ -1,15 +1,19 @@
 /* eslint-disable */
 export default {
 	sellerInfo:(state) => {
+		// console.log(state.goodsData)
 		return state.sellerInfo
 	},
 	goodsData:(state) => {
+		console.log(state.goodsData)
 		return state.goodsData
 	},
 	currentIndex:(state) => {
 		return state.currentIndex
 	},
 	foodData:(state) => {
+		// let a = state.foodData.ratings
+		// console.log(a.length)
 		return state.foodData
 	},
 	positive:(state) => {

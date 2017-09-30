@@ -2,7 +2,7 @@
 import axios from 'axios'
 export default {
 	getSllerInfo: ({commit}) => {
-		axios.get('static/json/data.json')
+		axios.get('static/json/sellerInfo.json')
 		.then(
 			function(res) {
 				commit('getSllerInfo', {data: res.data.seller})
@@ -60,7 +60,10 @@ export default {
 	addCar: ({commit}, foodItem) => {
 		commit('addCar', foodItem)
 	},
+	cutCar: ({commit}, foodItem) => {
+		commit('cutCar', foodItem)
+	},
 	isCover: ({commit}, isCover) => {
-		commit('addCar', isCover)
+		commit('isCover', isCover)
 	}
 }

@@ -9,7 +9,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="foods-wrapper" ref="foodsWrapper" @scroll="scroll()">
+		<div class="foods-wrapper" ref="foodsWrapper">
 			<ul>
 				<li v-for="(item, typeIndex) in goodsData" ref="foodList" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
@@ -29,8 +29,9 @@
 									<span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
-									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" @change="change(index1)"></vCartcontrol> -->
-									<vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name"></vCartcontrol>
+									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol> -->
+									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name" :count="food.count"></vCartcontrol> -->
+									<vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol>
 								</div>
 							</div>
 						</li>
@@ -38,7 +39,6 @@
 				</li>
 			</ul>
 		</div>
-		<!-- <vShopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"></vShopcart> -->
 		<vShopcart></vShopcart>
 		<vFood ref="food"></vFood>
 	</div>
@@ -61,24 +61,9 @@
 			}
 		},
 		computed: mapGetters([
-			'sellerInfo','goodsData','currentIndex'
+			'sellerInfo','goodsData','currentIndex','foodCar'
 		]),
-		// computed: {
-		// 	selectFoods() {
-		// 		let foods = []
-
-		// 		for(let i=0;i<this.goods.length;i++) {
-		// 			for(let j=0;j<this.goods[i].foods.length;j++) {
-		// 				if(this.goods[i].foods[j].count) {
-		// 					foods.push(this.goods[i].foods[j])
-		// 					//console.log(foods)
-		// 				}
-		// 			}
-		// 		}
-		// 		return foods
-		// 	}
-		// },
-		created() {
+		beforeCreate() {
 			let _this = this
 			this.$store.dispatch('getGoodsData').then(function(){
 				_this.$nextTick(() => {
@@ -122,9 +107,6 @@
 				let el = foodList[index]
 				this.foodsScroll.scrollToElement(el, 300)
 				this.$store.dispatch('changeCurIndex', index)
-			},
-			change(index) {
-				// this.goods[index].foods[index1].count++
 			},
 			getFoodDetail(foodsId, index, event) {
 				this.$store.dispatch('getFoodDetail')

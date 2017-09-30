@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <vHeader :seller="seller"></vHeader> -->
     <vHeader></vHeader>
     <div class="tab border-1px">
       <div class="tab-item">
@@ -14,10 +13,9 @@
       </div>
     </div>
     <div class="content">
-      <!-- <router-view :seller="seller"></router-view> -->
       <router-view></router-view>
     </div>
-    <div class="cover" v-show="isCover"></div>
+    <div class="cover" @click.stop="closeCover()" v-show="isCover"></div>
   </div>
 </template>
 
@@ -40,6 +38,11 @@ export default {
   ]),
   beforeCreate() {
     this.$store.dispatch('getSllerInfo')
+  },
+  methods: {
+    closeCover() {
+      this.$store.dispatch('isCover', false)
+    }
   }
 }
 </script>

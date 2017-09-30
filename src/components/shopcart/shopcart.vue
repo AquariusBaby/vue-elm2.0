@@ -1,6 +1,6 @@
 <template>
 	<div class="shopcart">
-		<div class="content" @touchstart.stop="toggleList()">
+		<div class="content" @click.stop="toggleList()">
 			<div class="content-left">
 				<div class="logo-wrapper">
 					<div class="logo" :class="{'highlight':totalCount>0}">
@@ -20,20 +20,31 @@
 				<div v-for="ball in balls" v-show="ball.show" class="ball"></div>
 				<div class="inner"></div>
 			</div> -->
-			<div class="shopcart-list" v-show="listShow && (totalCount>0)">
+			<div class="shopcart-list" v-show="isCover">
 				<div class="list-header">
 					<h1 class="title">购物车</h1>
-					<span class="empty" @touchstart="empty()">清空</span>
+					<span class="empty" @click.stop="empty()">清空</span>
 				</div>
 				<div class="list-content" ref="listContent">
 					<ul>
-						<li class="food" v-for="item in foodCar">
+						<!-- <li class="food" v-for="item in foodCar">
 							<span class="name">{{item.foodName}}</span>
 							<div class="price">
 								<span>￥{{item.foodPrice*item.count}}</span>
 							</div>
 							<div class="cartcontrol-wrapper">
-								<!-- <vCartcontrol :food="food"></vCartcontrol> -->
+								<vCartcontrol :foodsId="item.foodsId" :typeIndex="item.typeIndex" :foodPrice="item.foodPrice" :count="item.count"></vCartcontrol>
+							</div>
+						</li> -->
+						<li class="food" v-for="(item, typeIndex) in goodsData">
+							<div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0">
+								<span class="name">{{itemFoods.name}}</span>
+								<div class="price">
+									<span>￥{{itemFoods.price*itemFoods.count}}</span>
+								</div>
+								<div class="cartcontrol-wrapper">
+									<vCartcontrol :foodsId="itemFoods.foodsId" :typeIndex="typeIndex"></vCartcontrol>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -48,19 +59,6 @@
 	import BScroll from 'better-scroll'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	export default {
-		/*props: {
-			deliveryPrice: {
-				type: Number,
-				default: 0
-			},
-			minPrice: {
-				type: Number,
-				default: 0
-			},
-			selectFoods: {
-				type: Array
-			}
-		},*/
 		data() {
 			return {
 				balls: [
@@ -86,69 +84,13 @@
 			}
 		},
 		computed: mapGetters([
-			'payDesc','totalPrice','totalCount','foodCar','payClass'
+			'payDesc','totalPrice','totalCount','foodCar','payClass','isCover','goodsData'
 		]),
-		/*computed: {
-			totalPrice() {
-				let total = 0
-				for(let i=0;i<this.selectFoods.length;i++) {
-					total += this.selectFoods[i].price * this.selectFoods[i].count
-				}
-				return total
-			},
-			totalCount() {
-				let count = 0
-
-				for(let i=0;i<this.selectFoods.length;i++) {
-					count += this.selectFoods[i].count
-				}
-				return count
-			},
-			payDesc() {
-				if(this.totalPrice === 0) {
-					return `￥${this.minPrice}元起送`
-				}else if(this.totalPrice<this.minPrice) {
-					let diff = this.minPrice - this.totalPrice
-					return `还差￥${diff}`
-				}else {
-					return '去结算'
-				}
-			},
-			payClass() {
-				if(this.totalPrice < this.minPrice) {
-					return 'not-enough'
-				}else {
-					return 'enough'
-				}
-			},
-			listShow() {
-				if(!this.totalCount) {
-					this.fold = true
-					return false
-				}
-				let show = this.fold
-				if(show) {
-					this.$nextTick(() => {
-						if(!this.scroll) {
-							this.scroll = new BScroll(this.$refs.listContent)
-						} else {
-							this.scroll.refresh();
-						}
-					})
-					// console.log(this)
-				}
-				return show
-			}
-		},*/
 		methods: {
 			toggleList() {
-				/*if(!this.totalCount) {
-					this.listShow = false
-					return
-				}
-				//this.fold = !this.fold*/
 				this.listShow = !this.listShow
-				let isCover = !!(listShow && (totalCount>0))
+				let isCover = !!(this.listShow && (this.totalCount>0))
+				// console.log(isCover);
 				this.$store.dispatch('isCover', isCover)
 			},
 			empty() {

@@ -2,7 +2,7 @@
 <div>
 	<div class="rating">
 		<div class="rating-type">
-			<span @touchstart="select(2)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{foodData.ratings.length}}</span></span>
+			<span @touchstart="select(2)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{positive+negative}}</span></span>
 			<span @touchstart="select(0)" class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{positive}}</span></span>
 			<span @touchstart="select(1)" class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{negative}}</span></span>
 		</div>
