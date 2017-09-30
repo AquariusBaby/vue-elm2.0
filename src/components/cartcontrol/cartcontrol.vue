@@ -37,6 +37,16 @@
 				count: 0
 			}
 		},
+		mounted() {
+			let goodsDataFood = this.goodsData[this.typeIndex].foods
+
+			for (let i = 0,len = goodsDataFood.length;i<len;i++) {
+				if(goodsDataFood[i].foodsId == this.foodsId) {
+					console.log(i)
+					this.count = goodsDataFood[i].count
+				}
+			}
+		},
 		computed: mapGetters([
 			'goodsData'
 		]),
