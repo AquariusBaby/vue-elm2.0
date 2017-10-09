@@ -10,7 +10,7 @@
 	// import Vue from 'vue'
 	import {mapGetters} from 'vuex'
 	export default {
-		
+
 		props: {
 			foodsId: {
 				type: Number,
@@ -42,67 +42,32 @@
 				// count: 0
 			}
 		},
-		updated() {
-			// console.log(123) 
-		},
 		computed: mapGetters([
 			'goodsData','goodsCount'
 		]),
-		// watch: {
-		// 	goodsData(newVal, oldVal) {
-		// 		console.log(newVal, oldVal)
-		// 	},
-		// 	count(newVal, oldVal) {
-		// 		console.log(newVal, oldVal)
-		// 	}
-		// },
 		methods: {
 			addCart(event) {
-				// this.count++
 				let foodItem = {
 					foodsId: this.foodsId,
 					typeIndex: this.typeIndex,
 					foodIndex: this.foodIndex,
 					foodPrice: this.foodPrice
-					// foodName: this.foodName,
-					// count: this.count
 				}
 				this.$store.dispatch('addCar', foodItem)
-				// console.log(this.$store.getters.goodsCount)
-				/*let goodsDataFood = this.goodsData[this.typeIndex].foods
-				for (let i = 0,len = goodsDataFood.length;i<len;i++) {
-					if(goodsDataFood[i].foodsId == this.foodsId) {
-						// console.log(i, goodsDataFood[i].count)
-						this.count = goodsDataFood[i].count
-						// this.goodsCount[typeIndex][i] = goodsDataFood[i].count
-						// this.$store.dispatch('addCount', goodsDataFood[i].count)
-					}
-				}*/
-
-				// this.initCount()
+			//vue是通过检测get,set才得知数据是否更新的，而对于数组来说，是没有get，set方法的，所以需要我们自己手动触发，需要发送消息通知vue
+				this.$set(this.goodsCount, this.goodsCount)
 			},
 			decCart() {
-				/*if(this.count>0) {
-					this.count --
-				}
 				let foodItem = {
 					foodsId: this.foodsId,
 					typeIndex: this.typeIndex,
-					foodPrice: this.foodPrice,
-					count: this.count
+					foodIndex: this.foodIndex,
+					foodPrice: this.foodPrice
 				}
-				this.$store.dispatch('cutCar', foodItem)*/
+				this.$store.dispatch('cutCar', foodItem)
+				// console.log(this.goodsCount[0][0])
+				this.$set(this.goodsCount, this.goodsCount)
 			}
-			// initCount() {
-			// 	let goodsDataFood = this.goodsData[this.typeIndex].foods
-
-			// 	for (let i = 0,len = goodsDataFood.length;i<len;i++) {
-			// 		if(goodsDataFood[i].foodsId == this.foodsId) {
-			// 			// console.log(i, goodsDataFood[i].count)
-			// 			this.count = goodsDataFood[i].count
-			// 		}
-			// 	}
-			// }
 		}
 	}
 </script>

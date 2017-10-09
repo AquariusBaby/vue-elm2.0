@@ -110,68 +110,47 @@ const mutations = {
 			goodsDataNew = state.goodsData[index].foods
 			// console.log(goodsDataNew)
 		if(goodsDataNew[i].count > 0){
+		// console.log()
+		// if(state.goodsCount[index][i] > 0){
+			// state.goodsCount[index][i] ++
 			goodsDataNew[i].count ++
 			state.goodsData[index].foods = goodsDataNew
 			state.goodsCount[index][i] = goodsDataNew[i].count
 		} else {
+			// state.goodsCount[index][i] = 1
 			goodsDataNew[i].count = 1
 			state.goodsData[index].foods = goodsDataNew
 			state.goodsCount[index][i] = goodsDataNew[i].count
 		}
-		/*for(let i=0,len=goodsDataNew.length;i<len;i++) {
-			if(goodsDataNew[i].foodsId == foodItem.foodsId) {
-				if(goodsDataNew[i].count > 0){
-					goodsDataNew[i].count ++
-					state.goodsData[index].foods = goodsDataNew
-					// console.log(state.goodsData[index].foods, state.foodCar)
-					console.log(index, i)
-					state.goodsCount[index][i] = goodsDataNew[i].count
-				} else {
-					goodsDataNew[i].count = 1
-					state.goodsData[index].foods = goodsDataNew
-					// console.log(goodsDataNew, state.goodsData[index].foods)
-					console.log(index, i,goodsDataNew[i].count)
-					state.goodsCount[index][i] = goodsDataNew[i].count
-				}
-			}
-		}*/
-
-		// 索引数组去重会不会太消耗运算了（能用关联数组么）
-		/*for(let i=0,len=state.foodCar.length;i<len;i++) {
-			if (foodItem.foodsId == state.foodCar[i].foodsId) {
-				state.foodCar[i].count ++
-				return
-			}
-		}*/
-		// for(let i=0,len=state.foodCar.length;i<len;i++)
-
-		// state.foodCar.push(foodItem)
-		// console.log(state.foodCar,state.goodsData)
 	},
 	cutCar(state, foodItem) {
 		state.totalPrice -= foodItem.foodPrice
 		state.totalCount --
 
-		for(let i=0,len=state.goodsData.length;i<len;i++) {
-			// state.goodData[i].count == 0
-			if(state.goodsData[i].foodsId == foodItem.foodsId) {
-				if(state.goodData[i].count){
-					state.goodData[i].count == foodItem.count
-				} else {
-					state.goodData[i].count --
-				}
-			}
+		if(state.totalPrice === 0) {
+			state.payDesc = `￥${state.minPrice}元起送`
+		}else if(state.totalPrice < state.minPrice) {
+			let diff = state.minPrice - state.totalPrice
+			state.payDesc = `还差￥${diff}`
+		}else {
+			state.payDesc = '去结算'
 		}
 
-		for(let i=0,len=state.foodCar.length;i<len;i++) {
-			if (foodItem.foodsId == state.foodCar[i].foodsId) {
-				state.foodCar[i].count --
-				if(state.foodCar[i].count == 0) {
-					state.foodCar.splice(i, 1)
-				}
-				return
-			}
+		if(state.totalPrice < state.minPrice) {
+			state.payClass = 'not-enough'
+		}else {
+			state.payClass = 'enough'
 		}
+
+		let index = foodItem.typeIndex,
+			i = foodItem.foodIndex,
+			goodsDataNew = state.goodsData[index].foods
+
+		state.goodsCount[index][i] --
+
+		goodsDataNew[i].count --
+		state.goodsData[index].foods = goodsDataNew
+		state.goodsCount[index][i] = goodsDataNew[i].count
 	},
 	isCover(state, isCover) {
 		console.log(isCover)
