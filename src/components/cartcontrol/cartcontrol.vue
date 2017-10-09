@@ -53,9 +53,10 @@
 					foodIndex: this.foodIndex,
 					foodPrice: this.foodPrice
 				}
+				console.log(foodItem)
 				this.$store.dispatch('addCar', foodItem)
 			//vue是通过检测get,set才得知数据是否更新的，而对于数组来说，是没有get，set方法的，所以需要我们自己手动触发，需要发送消息通知vue
-				this.$set(this.goodsCount, this.goodsCount)
+				// this.$set(this.goodsCount, this.goodsCount)
 			},
 			decCart() {
 				let foodItem = {
@@ -66,7 +67,7 @@
 				}
 				this.$store.dispatch('cutCar', foodItem)
 				// console.log(this.goodsCount[0][0])
-				this.$set(this.goodsCount, this.goodsCount)
+				// this.$set(this.goodsCount, this.goodsCount)
 			}
 		}
 	}

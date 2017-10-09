@@ -18,7 +18,8 @@ const state = {
 	payDesc: '￥20元起送',	//支付描述
 	payClass: 'not-enough',
 	isCover: false,
-	goodsCount: [[],[],[],[],[],[],[],[],[]]
+	// goodsCount: []
+	goodsCount: [[0,0,0,0,0,0,0,0,0,0],[0],[0],[0,0,0],[0,0],[0,0],[0,0,0],[0,0,0,0,0],[0,0,0,0,0,0]]
 }
 
 const mutations = {
@@ -29,8 +30,13 @@ const mutations = {
 		state.goodsData = data.data
 		for (let i=0,len=state.goodsData.length;i<len;i++) {
 			let a = state.goodsData[i].foods
+			// state.goodsCount.length = len
+			// state.goodsCount.splice(len)
+			// state.goodsCount[i] = new Array()
 			for (let j=0,len=a.length;j<len;j++) {
 				a[j].count = 0
+				// state.goodsCount[i][j] = 0
+				// state.goodsCount[i].splice(j, 1, 0)
 			}
 			state.goodsData[i].foods = a
 		}
@@ -86,7 +92,7 @@ const mutations = {
 		}
 	},
 	addCar(state, foodItem) {
-		// console.log(foodItem)
+		console.log(foodItem)
 		state.totalPrice += foodItem.foodPrice
 		state.totalCount ++
 
@@ -106,21 +112,24 @@ const mutations = {
 		}
 
 		let index = foodItem.typeIndex,
-			i = foodItem.foodIndex,
-			goodsDataNew = state.goodsData[index].foods
+			i = foodItem.foodIndex
+			// goodsDataNew = state.goodsData[index].foods
 			// console.log(goodsDataNew)
-		if(goodsDataNew[i].count > 0){
-		// console.log()
+		if((state.goodsData[index].foods)[i].count > 0){
+		// console.log(index, i)
 		// if(state.goodsCount[index][i] > 0){
 			// state.goodsCount[index][i] ++
-			goodsDataNew[i].count ++
-			state.goodsData[index].foods = goodsDataNew
-			state.goodsCount[index][i] = goodsDataNew[i].count
+			(state.goodsData[index].foods)[i].count ++
+			// state.goodsData[index].foods = goodsDataNew
+			// state.goodsCount[index][i] = goodsDataNew[i].count
+			state.goodsCount[index].splice(i,1,(state.goodsData[index].foods)[i].count)
 		} else {
+		// console.log(index, i)
 			// state.goodsCount[index][i] = 1
-			goodsDataNew[i].count = 1
-			state.goodsData[index].foods = goodsDataNew
-			state.goodsCount[index][i] = goodsDataNew[i].count
+			(state.goodsData[index].foods)[i].count = 1
+			// state.goodsData[index].foods = goodsDataNew
+			// state.goodsCount[index][i] = goodsDataNew[i].count
+			state.goodsCount[index].splice(i,1,1)
 		}
 	},
 	cutCar(state, foodItem) {
@@ -150,7 +159,8 @@ const mutations = {
 
 		goodsDataNew[i].count --
 		state.goodsData[index].foods = goodsDataNew
-		state.goodsCount[index][i] = goodsDataNew[i].count
+		// state.goodsCount[index][i] = goodsDataNew[i].count
+		state.goodsCount[index].splice(i,1,goodsDataNew[i].count)
 	},
 	isCover(state, isCover) {
 		console.log(isCover)
