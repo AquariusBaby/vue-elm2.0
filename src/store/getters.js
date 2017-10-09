@@ -45,5 +45,8 @@ export default {
 	},
 	isCover:(state) => {
 		return state.isCover
+	},
+	goodsCount:(state) => {
+		return state.goodsCount
 	}
 }

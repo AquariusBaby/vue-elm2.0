@@ -1,7 +1,7 @@
 <template>
 	<div class="cartcontrol">
-		<div class="decrease" @click.stop='decCart()' v-show="count>0">-</div>
-		<div class="count" v-show="count>0">{{count}}</div>
+		<div class="decrease" @click.stop='decCart()' v-show="goodsCount[typeIndex][foodIndex]>0">-</div>
+		<div class="count" v-show="goodsCount[typeIndex][foodIndex]>0">{{goodsCount[typeIndex][foodIndex]}}</div>
 		<div class="increase" @click.stop='addCart()'>+</div>
 	</div>
 </template>
@@ -10,6 +10,7 @@
 	// import Vue from 'vue'
 	import {mapGetters} from 'vuex'
 	export default {
+		
 		props: {
 			foodsId: {
 				type: Number,
@@ -18,12 +19,16 @@
 			typeIndex: {
 				type: Number,
 				default: 0
-			}
-			/*foodPrice: {
+			},
+			foodIndex: {
 				type: Number,
 				default: 0
 			},
-			foodName: {
+			foodPrice: {
+				type: Number,
+				default: 0
+			}
+			/*foodName: {
 				type: String,
 				default: ''
 			},
@@ -34,33 +39,47 @@
 		},
 		data() {
 			return {
-				count: 0
+				// count: 0
 			}
 		},
-		mounted() {
-			let goodsDataFood = this.goodsData[this.typeIndex].foods
-
-			for (let i = 0,len = goodsDataFood.length;i<len;i++) {
-				if(goodsDataFood[i].foodsId == this.foodsId) {
-					console.log(i)
-					this.count = goodsDataFood[i].count
-				}
-			}
+		updated() {
+			// console.log(123) 
 		},
 		computed: mapGetters([
-			'goodsData'
+			'goodsData','goodsCount'
 		]),
+		// watch: {
+		// 	goodsData(newVal, oldVal) {
+		// 		console.log(newVal, oldVal)
+		// 	},
+		// 	count(newVal, oldVal) {
+		// 		console.log(newVal, oldVal)
+		// 	}
+		// },
 		methods: {
 			addCart(event) {
 				// this.count++
 				let foodItem = {
 					foodsId: this.foodsId,
-					typeIndex: this.typeIndex
-					// foodPrice: this.foodPrice,
+					typeIndex: this.typeIndex,
+					foodIndex: this.foodIndex,
+					foodPrice: this.foodPrice
 					// foodName: this.foodName,
 					// count: this.count
 				}
 				this.$store.dispatch('addCar', foodItem)
+				// console.log(this.$store.getters.goodsCount)
+				/*let goodsDataFood = this.goodsData[this.typeIndex].foods
+				for (let i = 0,len = goodsDataFood.length;i<len;i++) {
+					if(goodsDataFood[i].foodsId == this.foodsId) {
+						// console.log(i, goodsDataFood[i].count)
+						this.count = goodsDataFood[i].count
+						// this.goodsCount[typeIndex][i] = goodsDataFood[i].count
+						// this.$store.dispatch('addCount', goodsDataFood[i].count)
+					}
+				}*/
+
+				// this.initCount()
 			},
 			decCart() {
 				/*if(this.count>0) {
@@ -74,6 +93,16 @@
 				}
 				this.$store.dispatch('cutCar', foodItem)*/
 			}
+			// initCount() {
+			// 	let goodsDataFood = this.goodsData[this.typeIndex].foods
+
+			// 	for (let i = 0,len = goodsDataFood.length;i<len;i++) {
+			// 		if(goodsDataFood[i].foodsId == this.foodsId) {
+			// 			// console.log(i, goodsDataFood[i].count)
+			// 			this.count = goodsDataFood[i].count
+			// 		}
+			// 	}
+			// }
 		}
 	}
 </script>

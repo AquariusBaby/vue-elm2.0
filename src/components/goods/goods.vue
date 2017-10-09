@@ -31,7 +31,7 @@
 								<div class="cartcontrol-wrapper">
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol> -->
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name" :count="food.count"></vCartcontrol> -->
-									<vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol>
+									<vCartcontrol :foodsId="food.foodsId" :foodPrice="food.price" :foodIndex="index" :typeIndex="typeIndex"></vCartcontrol>
 								</div>
 							</div>
 						</li>

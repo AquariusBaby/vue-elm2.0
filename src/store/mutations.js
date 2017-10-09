@@ -17,7 +17,8 @@ const state = {
 	minPrice: 20,
 	payDesc: '￥20元起送',	//支付描述
 	payClass: 'not-enough',
-	isCover: false
+	isCover: false,
+	goodsCount: [[],[],[],[],[],[],[],[],[]]
 }
 
 const mutations = {
@@ -85,7 +86,7 @@ const mutations = {
 		}
 	},
 	addCar(state, foodItem) {
-		console.log(foodItem)
+		// console.log(foodItem)
 		state.totalPrice += foodItem.foodPrice
 		state.totalCount ++
 
@@ -105,22 +106,35 @@ const mutations = {
 		}
 
 		let index = foodItem.typeIndex,
+			i = foodItem.foodIndex,
 			goodsDataNew = state.goodsData[index].foods
 			// console.log(goodsDataNew)
-		for(let i=0,len=goodsDataNew.length;i<len;i++) {
-			// state.goodData[i].count == 0
+		if(goodsDataNew[i].count > 0){
+			goodsDataNew[i].count ++
+			state.goodsData[index].foods = goodsDataNew
+			state.goodsCount[index][i] = goodsDataNew[i].count
+		} else {
+			goodsDataNew[i].count = 1
+			state.goodsData[index].foods = goodsDataNew
+			state.goodsCount[index][i] = goodsDataNew[i].count
+		}
+		/*for(let i=0,len=goodsDataNew.length;i<len;i++) {
 			if(goodsDataNew[i].foodsId == foodItem.foodsId) {
 				if(goodsDataNew[i].count > 0){
 					goodsDataNew[i].count ++
 					state.goodsData[index].foods = goodsDataNew
 					// console.log(state.goodsData[index].foods, state.foodCar)
+					console.log(index, i)
+					state.goodsCount[index][i] = goodsDataNew[i].count
 				} else {
 					goodsDataNew[i].count = 1
-					// console.log(goodsDataNew, state.goodsData[index].foods)
 					state.goodsData[index].foods = goodsDataNew
+					// console.log(goodsDataNew, state.goodsData[index].foods)
+					console.log(index, i,goodsDataNew[i].count)
+					state.goodsCount[index][i] = goodsDataNew[i].count
 				}
 			}
-		}
+		}*/
 
 		// 索引数组去重会不会太消耗运算了（能用关联数组么）
 		/*for(let i=0,len=state.foodCar.length;i<len;i++) {

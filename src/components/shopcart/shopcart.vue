@@ -36,17 +36,21 @@
 								<vCartcontrol :foodsId="item.foodsId" :typeIndex="item.typeIndex" :foodPrice="item.foodPrice" :count="item.count"></vCartcontrol>
 							</div>
 						</li> -->
-						<li class="food" v-for="(item, typeIndex) in goodsData">
-							<div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0">
+						<!-- <li class="food" v-for="(item, typeIndex) in goodsData"> -->
+							<!-- <div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0"> -->
+						<div v-for="(item, typeIndex) in goodsData">
+							<li class="food" v-for="(itemFoods, index) in item.foods"  v-if="itemFoods.count>0">
 								<span class="name">{{itemFoods.name}}</span>
 								<div class="price">
 									<span>￥{{itemFoods.price*itemFoods.count}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
-									<vCartcontrol :foodsId="itemFoods.foodsId" :typeIndex="typeIndex"></vCartcontrol>
+									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex"></vCartcontrol>
 								</div>
-							</div>
-						</li>
+							</li>
+						</div>
+							<!-- </div> -->
+						<!-- </li> -->
 					</ul>
 				</div>
 			</div>
@@ -83,6 +87,9 @@
 				listShow: false
 			}
 		},
+		// mounted() {
+
+		// },
 		computed: mapGetters([
 			'payDesc','totalPrice','totalCount','foodCar','payClass','isCover','goodsData'
 		]),
