@@ -3,7 +3,7 @@
     <vHeader></vHeader>
     <div class="tab border-1px">
       <div class="tab-item">
-        <router-link to="/goods" class="active">商品</router-link>
+        <router-link to="/goods">商品</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/comment">评论</router-link>
@@ -13,9 +13,12 @@
       </div>
     </div>
     <div class="content">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <div class="cover" @click.stop="closeCover()" v-show="isCover"></div>
+    <vShopcart></vShopcart>
   </div>
 </template>
 
@@ -23,10 +26,12 @@
 /* eslint-disable */
 import { mapGetters } from 'vuex'
 import vHeader from './components/header/header.vue'
+import shopcart from '@/components/shopcart/shopcart.vue'
 export default {
   name: 'app',
   components: {
-    'vHeader': vHeader
+    'vHeader': vHeader,
+    'vShopcart': shopcart
   },
   data () {
     return {
@@ -80,7 +85,7 @@ export default {
         display: block;
         font-size: 14px;
         color: rgb(77, 85, 93);
-        &.active {
+        &.router-link-active {
           color: rgb(240, 20, 20);
         }
       }

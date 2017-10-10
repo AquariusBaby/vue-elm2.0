@@ -1,5 +1,5 @@
 <template>
-	<div ref="food" v-show='isShowFoodDetail' class="food">
+	<div ref="food" v-show='isShowFoodDetail&&isFinished' class="food">
 		<div class="food-content">
 			<div class="image-header">
 				<img :src="foodData.image" alt="">
@@ -46,6 +46,11 @@
 			NEGATIVE = 1,
 			ALL =2
 	export default {
+		data() {
+			return {
+				isFinished: false
+			}
+		},
 		beforeCreate() {
 			let foodsId = this.$route.query.foodsId,
 				foodsIndex = this.$route.query.foodsIndex,
@@ -63,10 +68,15 @@
 					}
 				})
 			})
+			// console.log(typeof this.getFoodInfo())
+			// this.getFoodInfo()
 		},
 		computed: mapGetters([
 			'foodData','isShowFoodDetail'
 		]),
+		activated() {
+			this.getFoodInfo()
+		},
 		methods: {
 			show() {
 				this.showFlag = true
@@ -75,8 +85,25 @@
 				this.$store.dispatch('hideFoodDetail')
 				this.$router.go(-1)
 			},
-			addFirst() {
-
+			getFoodInfo() {
+				this.isFinished = false
+				let foodsId = this.$route.query.foodsId,
+					foodsIndex = this.$route.query.foodsIndex,
+					foodsParma = {
+						foodsId: foodsId,
+						foodsIndex: foodsIndex
+					}
+				let _this = this
+				this.$store.dispatch('getFoodInfo', foodsParma).then(function(){
+					_this.$nextTick(() => {
+						if (!_this.sroll) {
+							_this.scroll =new BScroll(_this.$refs.food)
+						} else {
+							_this.scroll.refresh()
+						}
+					})
+					_this.isFinished = true
+				})
 			}
 		},
 		components: {

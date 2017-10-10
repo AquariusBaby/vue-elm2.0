@@ -2,7 +2,7 @@
 import axios from 'axios'
 export default {
 	getSllerInfo: ({commit}) => {
-		axios.get('static/json/sellerInfo.json')
+		return axios.get('static/json/sellerInfo.json')
 		.then(
 			function(res) {
 				commit('getSllerInfo', {data: res.data.seller})
@@ -31,6 +31,21 @@ export default {
 				console.log(err)
 		})
 	},
+	getCommentData: ({commit}) => {
+		//返回一个axios对象，axios是基于promise的，所以可以使用.then().catch()
+		return axios.get('static/json/comment.json')
+		.then(
+			function(res) {
+				commit('getCommentData', {data: res.data.ratings})
+			},
+			function(err) {
+				console.log(err.type);
+		})
+		.catch(
+			function(err) {
+				console.log(err)
+		})
+	},
 	changeCurIndex: ({commit}, index) => {
 		commit('changeCurIndex', index)
 	},
@@ -47,7 +62,7 @@ export default {
 		return axios.get('static/json/foodList.json?foodsId=' + foodsParma.foodsId + '&foodsIndex=' + foodsParma.foodsIndex)
 		.then(
 			function(res) {
-				commit('getFoodInfo', {data: res.data.goods,foodsParma: foodsParma})
+				commit('getFoodInfo', {data: res.data.goods, foodsParma: foodsParma})
 			},
 			function(err) {
 				console.log(err.type);
@@ -65,5 +80,14 @@ export default {
 	},
 	isCover: ({commit}, isCover) => {
 		commit('isCover', isCover)
+	},
+	clearCar: ({commit}) => {
+		commit('clearCar')
+	},
+	getFavorite: ({commit}) => {
+		commit('getFavorite')
 	}
+	// initScroll: ({commit}) => {
+	// 	commit('initScroll')
+	// }
 }

@@ -31,7 +31,7 @@
 								<div class="cartcontrol-wrapper">
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol> -->
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name" :count="food.count"></vCartcontrol> -->
-									<vCartcontrol :foodsId="food.foodsId" :foodPrice="food.price" :foodIndex="index" :typeIndex="typeIndex"></vCartcontrol>
+									<vCartcontrol :foodsId="food.foodsId" :foodPrice="food.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="food.name"></vCartcontrol>
 								</div>
 							</div>
 						</li>
@@ -39,8 +39,8 @@
 				</li>
 			</ul>
 		</div>
-		<vShopcart></vShopcart>
-		<vFood ref="food"></vFood>
+		<!-- <vShopcart></vShopcart> -->
+		<!-- <vFood ref="food"></vFood> -->
 	</div>
 </template>
 <script>
@@ -48,7 +48,7 @@
 	import { mapGetters } from 'vuex'
 	import Vue from 'vue'
 	import BScroll from 'better-scroll'
-	import shopcart from '@/components/shopcart/shopcart.vue'
+	// import shopcart from '@/components/shopcart/shopcart.vue'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	import food from '@/components/food/food.vue'
 	export default {
@@ -114,7 +114,7 @@
 			}
 		},
 		components: {
-			'vShopcart': shopcart,
+			// 'vShopcart': shopcart,
 			'vCartcontrol': cartcontrol,
 			'vFood': food
 		}

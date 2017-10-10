@@ -4,6 +4,7 @@ import getters from './getters.js'
 const state = {
 	sellerInfo: {avatar: 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg'},
 	goodsData: null,
+	commentData: null,
 	currentIndex: 0,
 	foodData: {image: 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg'},
 	isShowFoodDetail: false,
@@ -18,8 +19,13 @@ const state = {
 	payDesc: '￥20元起送',	//支付描述
 	payClass: 'not-enough',
 	isCover: false,
-	// goodsCount: []
-	goodsCount: [[0,0,0,0,0,0,0,0,0,0],[0],[0],[0,0,0],[0,0],[0,0],[0,0,0],[0,0,0,0,0],[0,0,0,0,0,0]]
+	// goodsCount: [],
+	goodsCount: [[0,0,0,0,0,0,0,0,0,0],[0],[0],[0,0,0],[0,0],[0,0],[0,0,0],[0,0,0,0,0],[0,0,0,0,0,0]],
+	isClearCar: true,
+	isMerchant: false,
+	initScroll: false,
+	favoriteText: '收藏',
+	favorite: false
 }
 
 const mutations = {
@@ -28,7 +34,7 @@ const mutations = {
 	},
 	getGoodsData(state, data) {
 		state.goodsData = data.data
-		for (let i=0,len=state.goodsData.length;i<len;i++) {
+		/*for (let i=0,len=state.goodsData.length;i<len;i++) {
 			let a = state.goodsData[i].foods
 			// state.goodsCount.length = len
 			// state.goodsCount.splice(len)
@@ -39,7 +45,33 @@ const mutations = {
 				// state.goodsCount[i].splice(j, 1, 0)
 			}
 			state.goodsData[i].foods = a
+		}*/
+	},
+	getCommentData(state, data) {
+		state.commentData = data.data
+		console.log(data)
+		// let dataIndex = state.commentData
+		// for(let i=0,len=dataIndex.length; i < len; i++) {
+		// 	if(dataIndex[i].foodsId == foodsId){
+		// 		state.foodData = dataIndex[i]
+		// 		// console.log(state.foodData)
+		// 		break
+		// 	}
+		// }
+		state.foodData = state.commentData
+		state.positive = 0
+		state.negative = 0
+		let ratings = state.foodData.ratings
+
+		for(let i=0,len=ratings.length; i < len; i++) {
+			if(ratings[i].rateType == 0) {
+				state.positive++
+			}
+			if(ratings[i].rateType == 1) {
+				state.negative++
+			}
 		}
+		state.isMerchant = true
 	},
 	changeCurIndex(state, index) {
 		state.currentIndex = index
@@ -75,7 +107,7 @@ const mutations = {
 		for(let i=0,len=dataIndex.length; i < len; i++) {
 			if(dataIndex[i].foodsId == foodsId){
 				state.foodData = dataIndex[i]
-				console.log(state.foodData)
+				// console.log(state.foodData)
 				break
 			}
 		}
@@ -92,7 +124,7 @@ const mutations = {
 		}
 	},
 	addCar(state, foodItem) {
-		console.log(foodItem)
+		// console.log(foodItem)
 		state.totalPrice += foodItem.foodPrice
 		state.totalCount ++
 
@@ -113,23 +145,29 @@ const mutations = {
 
 		let index = foodItem.typeIndex,
 			i = foodItem.foodIndex
-			// goodsDataNew = state.goodsData[index].foods
-			// console.log(goodsDataNew)
-		if((state.goodsData[index].foods)[i].count > 0){
-		// console.log(index, i)
-		// if(state.goodsCount[index][i] > 0){
-			// state.goodsCount[index][i] ++
+			// ids = ''+index+i
+		/*if((state.goodsData[index].foods)[i].count > 0){
 			(state.goodsData[index].foods)[i].count ++
-			// state.goodsData[index].foods = goodsDataNew
-			// state.goodsCount[index][i] = goodsDataNew[i].count
 			state.goodsCount[index].splice(i,1,(state.goodsData[index].foods)[i].count)
 		} else {
-		// console.log(index, i)
-			// state.goodsCount[index][i] = 1
 			(state.goodsData[index].foods)[i].count = 1
-			// state.goodsData[index].foods = goodsDataNew
-			// state.goodsCount[index][i] = goodsDataNew[i].count
 			state.goodsCount[index].splice(i,1,1)
+		}*/
+		
+		if((state.goodsCount)[index][i].count && (state.goodsCount)[index][i].count > 0){
+			let countMenu = (state.goodsCount)[index][i]
+				countMenu.count ++
+			state.goodsCount[index].splice(i,1,countMenu)
+		} else {
+			let menu = {
+				count: 1,
+				name: foodItem.foodName,
+				price: foodItem.foodPrice,
+				foodsId: foodItem.foodsId,
+				typeIndex: index,
+				foodIndex: i
+			}
+			state.goodsCount[index].splice(i,1,menu)
 		}
 	},
 	cutCar(state, foodItem) {
@@ -152,20 +190,46 @@ const mutations = {
 		}
 
 		let index = foodItem.typeIndex,
-			i = foodItem.foodIndex,
-			goodsDataNew = state.goodsData[index].foods
+			i = foodItem.foodIndex
+			// goodsDataNew = state.goodsData[index].foods
 
-		state.goodsCount[index][i] --
+		// state.goodsCount[index][i] --
 
-		goodsDataNew[i].count --
-		state.goodsData[index].foods = goodsDataNew
-		// state.goodsCount[index][i] = goodsDataNew[i].count
-		state.goodsCount[index].splice(i,1,goodsDataNew[i].count)
+		// goodsDataNew[i].count --
+		// state.goodsData[index].foods = goodsDataNew
+		// state.goodsCount[index].splice(i,1,goodsDataNew[i].count)
+		let countMenu = (state.goodsCount)[index][i]
+				countMenu.count --
+			state.goodsCount[index].splice(i,1,countMenu)
+
+		if(state.totalCount == 0) {
+			state.isCover = false
+		}
 	},
 	isCover(state, isCover) {
-		console.log(isCover)
 		state.isCover = isCover
+	},
+	clearCar(state) {
+		state.totalPrice = 0
+		state.totalCount = 0
+		state.payDesc = `￥${state.minPrice}元起送`
+		state.payClass = 'not-enough'
+		for(let i=0,len=state.goodsCount.length;i<len;i++) {
+			let a = (state.goodsCount)[i]
+			for(let j=0,jen=(state.goodsCount)[i].length;j<jen;j++) {
+				if((state.goodsCount)[i][j]!==0) {
+					a[j] = 0
+				}
+			}
+			(state.goodsCount).splice(i,1,a)
+		}
+	},
+	getFavorite(state) {
+		state.favorite = !state.favorite
 	}
+	// initScroll(state) {
+	// 	state.initScroll = true
+	// }
 }
 
 export default {

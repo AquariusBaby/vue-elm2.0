@@ -3,59 +3,61 @@
 		<div class="ratings-content">
 			<div class="overview">
 				<div class="overview-left">
-					<h1 class="score">{{seller.score}}</h1>
+					<h1 class="score">{{sellerInfo.score}}</h1>
           <div class="title">综合评分</div>
-          <div class="rank">高于周边商家{{seller.rankRate}}%</div>
+          <div class="rank">高于周边商家{{sellerInfo.rankRate}}%</div>
 				</div>
 				<div class="overview-right">
 					<div class="score-wrapper">
             <span class="title">服务态度</span>
-            <star :size="36" :score="seller.serviceScore"></star>
-            <span class="score">{{seller.serviceScore}}</span>
+            <star :size="36" :score="sellerInfo.serviceScore"></star>
+            <span class="score">{{sellerInfo.serviceScore}}</span>
           </div>
           <div class="score-wrapper">
             <span class="title">商品评分</span>
-            <star :size="36" :score="seller.foodScore"></star>
-            <span class="score">{{seller.foodScore}}</span>
+            <star :size="36" :score="sellerInfo.foodScore"></star>
+            <span class="score">{{sellerInfo.foodScore}}</span>
           </div>
           <div class="delivery-wrapper">
             <span class="title">送达时间</span>
-            <span class="delivery">{{seller.deliveryTime}}分钟</span>
+            <span class="delivery">{{sellerInfo.deliveryTime}}分钟</span>
           </div>
 				</div>
 			</div>
 			<vSplit></vSplit>
-			<vRating :select-type="selectType" :only-content="onlyContent" :ratings="ratings"></vRating>
-			<div class="rating-wrapper">
-				<ul>
-					<li v-for="rating in ratings" v-show="needShow(rating.rateType, rating.text)" class="rating-item">
-						<div class="avatar">
-							<img :src="rating.avatar" width="28" height="28" alt="">
-						</div>
-						<div class="content">
-							<h1 class="name">{{rating.username}}</h1>
-							<div class="star-wrapper">
-								<star :size="24" :score="rating.score"></star>
-								<span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
-							</div>
-							<p class="text">{{rating.text}}</p>
-              <div class="recommend" v-show="rating.recommend && rating.recommend.length">
-                <span class="icon-thumb_up"></span>
-                <span class="item" v-for="item in rating.recommend">{{item}}</span>
+			<!-- <vRating :select-type="selectType" :only-content="onlyContent" :ratings="ratings"></vRating> -->
+      <vRating @initscroll="initscroll"></vRating>
+			<!-- <div class="rating-wrapper">
+        <ul>
+          <li v-for="item in ratings" v-show="needShow(item.rateType, item.text)" class="rating-item">
+            <div class="avatar">
+              <img :src="item.avatar" width="28" height="28" alt="">
+            </div>
+            <div class="content">
+              <h1 class="name">{{item.username}}</h1>
+              <div class="star-wrapper">
+                <star :size="24" :score="rating.score"></star>
+                <span class="delivery" v-show="item.deliveryTime">{{item.deliveryTime}}</span>
               </div>
-              <div class="time">
-                {{rating.rateTime}}
-              </div>
-						</div>
-					</li>
-				</ul>
-			</div>
+              <p class="text">{{item.text}}</p>
+                    <div class="recommend" v-show="item.recommend && item.recommend.length">
+                      <span class="icon-thumb_up"></span>
+                      <span class="item" v-for="commentItem in item.recommend">{{commentItem}}</span>
+                    </div>
+                    <div class="time">
+                      {{item.rateTime}}
+                    </div>
+            </div>
+          </li>
+        </ul>
+      </div> -->
 		</div>
     
 	</div>
 </template>
 <script>
 	/* eslint-disable */
+  import {mapGetters} from 'vuex'
 	import BScroll from 'better-scroll'
 	import split from '@/components/split/split.vue'
 	import rating from '@/components/ratings/rating.vue'
@@ -65,31 +67,47 @@
 	const ALL = 2;
 
 	export default {
-		props: {
-			seller: {
-				type: Object
-			}
-		},
+    beforeCreate() {
+      let _this = this
+      this.$store.dispatch('getCommentData').then(function(res){
+        _this.$nextTick(() => {
+          _this.scroll = new BScroll(_this.$refs.ratings)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    activated() {
+      let _this = this
+      this.$store.dispatch('getCommentData').then(function(res){
+        _this.$nextTick(() => {
+          _this.scroll = new BScroll(_this.$refs.ratings)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
 		data() {
 			return {
-				ratings: [],
 				selectType: ALL,
 				onlyContent: true
+        // isInitScroll: this.initScroll
 			}
 		},
-		created() {
-			let _this = this
-			this.$axios.get('static/json/data.json').then((res) => {
-				_this.ratings = res.data.ratings
-				//console.log(res.data.ratings)
-				_this.$nextTick(() => {
-					this.scroll = new BScroll(_this.$refs.ratings)
-				})
-			})
-			.catch((err) => {
-				console.log(err)
-			})
-		},
+    computed: mapGetters([
+      'sellerInfo','commentData'
+    ]),
+    // watch: {
+    //   isInitScroll: {
+    //     handler:function(){
+    //       console.log(this)
+    //       this.scroll.refresh();
+    //     },
+    //     deep:true
+    //   }
+    // },
 		methods: {
 			needShow(type, text) {
 				if (this.onlyContent && !text) {
@@ -100,7 +118,12 @@
 				} else {
 					return type === this.selectType
 				}
-			}
+			},
+      initscroll() {
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      }
 		},
 		components: {
 			'vSplit': split,

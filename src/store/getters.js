@@ -5,8 +5,11 @@ export default {
 		return state.sellerInfo
 	},
 	goodsData:(state) => {
-		console.log(state.goodsData)
+		// console.log(state.goodsData)
 		return state.goodsData
+	},
+	commentData:(state) => {
+		return state.commentData
 	},
 	currentIndex:(state) => {
 		return state.currentIndex
@@ -48,5 +51,17 @@ export default {
 	},
 	goodsCount:(state) => {
 		return state.goodsCount
+	},
+	isMerchant:(state) => {
+		return state.isMerchant
+	},
+	// initScroll:(state) => {
+	// 	return state.initScroll
+	// }
+	favoriteText:(state) => {
+		return state.favoriteText
+	},
+	favorite:(state) => {
+		return state.favorite
 	}
 }

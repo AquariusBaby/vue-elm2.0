@@ -1,7 +1,10 @@
 <template>
 	<div class="cartcontrol">
-		<div class="decrease" @click.stop='decCart()' v-show="goodsCount[typeIndex][foodIndex]>0">-</div>
+		<!-- <div class="decrease" @click.stop='decCart()' v-show="goodsCount[typeIndex][foodIndex]>0">-</div>
 		<div class="count" v-show="goodsCount[typeIndex][foodIndex]>0">{{goodsCount[typeIndex][foodIndex]}}</div>
+		<div class="increase" @click.stop='addCart()'>+</div> -->
+		<div class="decrease" @click.stop='decCart()' v-show="(goodsCount[typeIndex][foodIndex]).count>0">-</div>
+		<div class="count" v-show="(goodsCount[typeIndex][foodIndex]).count>0">{{(goodsCount[typeIndex][foodIndex]).count}}</div>
 		<div class="increase" @click.stop='addCart()'>+</div>
 	</div>
 </template>
@@ -27,12 +30,12 @@
 			foodPrice: {
 				type: Number,
 				default: 0
-			}
-			/*foodName: {
+			},
+			foodName: {
 				type: String,
 				default: ''
-			},
-			count: {
+			}
+			/*count: {
 				type: Number,
 				default: 0
 			}*/
@@ -51,7 +54,8 @@
 					foodsId: this.foodsId,
 					typeIndex: this.typeIndex,
 					foodIndex: this.foodIndex,
-					foodPrice: this.foodPrice
+					foodPrice: this.foodPrice,
+					foodName: this.foodName
 				}
 				console.log(foodItem)
 				this.$store.dispatch('addCar', foodItem)
@@ -63,7 +67,8 @@
 					foodsId: this.foodsId,
 					typeIndex: this.typeIndex,
 					foodIndex: this.foodIndex,
-					foodPrice: this.foodPrice
+					foodPrice: this.foodPrice,
+					foodName: this.foodName
 				}
 				this.$store.dispatch('cutCar', foodItem)
 				// console.log(this.goodsCount[0][0])

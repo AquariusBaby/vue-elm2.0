@@ -11,7 +11,7 @@
 			<span class="text">只看有内容的评价</span>
 		</div>
 	</div>
-	<div class="rating-wrapper">
+	<div class="rating-wrapper rating-food" v-if="!isMerchant">
 		<ul v-show="foodData.ratings && foodData.ratings.length">
 			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
 				<div class="user">
@@ -26,14 +26,39 @@
 		</ul>
 		<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
 	</div>
+	<div class="rating-wrapper rating-comment" v-if="isMerchant">
+		<ul v-show="foodData.ratings && foodData.ratings.length">
+			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
+				<div class="user-avatar">
+					<img class="avatar" width="28" height="28" :src="rating.avatar" alt="">
+				</div>
+				<div class="comment-content">
+					<div class="info-top">
+						<span class="name">{{rating.username}}</span>
+						<span class="time">{{rating.rateTime}}</span>
+					</div>
+					<star :size="24" :score="rating.score"></star>
+					<p class="text">{{rating.text}}</p>
+					<div class="tag">
+						<span>⊙</span>
+						<ul>
+							<li v-for="item in rating.recommend">{{item}}</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
+	</div>
 </div>
 </template>
 <script>
 	/* eslint-disable */
+	import {mapGetters} from 'vuex'
+	import star from '@/components/star/star.vue'
 	const POSITIVE = 0,
 			NEGATIVE = 1,
 			ALL =2
-	import {mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -47,15 +72,21 @@
 			}
 		},
 		computed: mapGetters([
-			'foodData','positive','negative'
+			'foodData','positive','negative','isMerchant'
 		]),
 		methods: {
 			select(type) {
 				this.selectType = type
+				this.$emit('initscroll')	//这里能不用$emit()么，多百度百度
+				// this.$store.dispatch('initScroll')
 			},
 			toggleContent(event) {
 				this.onlyContent =!this.onlyContent
+				this.$emit('initscroll')
 			}
+		},
+		components: {
+			'star': star
 		}
 	}
 </script>
@@ -155,11 +186,75 @@
 					font-size: 12px;
 				}
 			}
+			&:last-child {
+				border-bottom: none;
+			}
 		}
 		.no-rating {
 			padding: 16px 0;
 			font-size: 12px;
 			color: rgb(147, 153, 159);
+		}
+		&.rating-comment {
+			.rating-item {
+				padding: 18px 0;
+				.user-avatar {
+					margin-right: 12px;
+					> img {
+						border-radius: 50%;
+					}
+				}
+				.comment-content {
+					width: 100%;
+					.info-top {
+						width: 100%;
+						height: 12px;
+						line-height: 12px;
+						margin-bottom: 4px;
+						.name {
+							text-align: left;
+							font-size: 10px;
+							color: rgb(7,17,27);
+							vertical-align: middle;
+						}
+						.time {
+							// text-align: right;
+							float: right;
+							font-size: 10px;
+							color: rgb(147,153,159);
+							font-weight: 200;
+							vertical-align: middle;
+						}
+					}
+					.text {
+						margin: 6px 0 8px 0;
+						text-align: left;
+						font-size: 12px;
+						color: rgb(7,17,27);
+						line-height: 18px;
+					}
+					.tag {
+						> span {
+							display: inline-block;
+							width: 8px;
+							height: 8px;
+						}
+						> ul {
+							margin-left: 8px;
+							> li {
+								display: inline-block;
+								padding: 0 6px;
+								border: 1px solid rgba(7,17,27,0.1);
+								border-radius: 1px;
+								font-size: 9px;
+								color: rgb(147,153,159);
+								line-height: 16px;
+								margin-right: 8px;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 </style>

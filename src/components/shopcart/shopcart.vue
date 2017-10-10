@@ -27,30 +27,32 @@
 				</div>
 				<div class="list-content" ref="listContent">
 					<ul>
-						<!-- <li class="food" v-for="item in foodCar">
-							<span class="name">{{item.foodName}}</span>
-							<div class="price">
-								<span>￥{{item.foodPrice*item.count}}</span>
-							</div>
-							<div class="cartcontrol-wrapper">
-								<vCartcontrol :foodsId="item.foodsId" :typeIndex="item.typeIndex" :foodPrice="item.foodPrice" :count="item.count"></vCartcontrol>
-							</div>
-						</li> -->
 						<!-- <li class="food" v-for="(item, typeIndex) in goodsData"> -->
 							<!-- <div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0"> -->
-						<div v-for="(item, typeIndex) in goodsData">
+						<!--123 <div v-for="(item, typeIndex) in goodsData">
 							<li class="food" v-for="(itemFoods, index) in item.foods"  v-if="itemFoods.count>0">
 								<span class="name">{{itemFoods.name}}</span>
 								<div class="price">
 									<span>￥{{itemFoods.price*itemFoods.count}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
-									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex"></vCartcontrol>
+									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
+								</div>
+							</li>
+						</div> 123-->
+							<!-- </div> -->
+						<!-- </li> -->
+						<div v-for="(item, typeIndex) in goodsCount">
+							<li class="food" v-for="(itemFoods, index) in item"  v-if="itemFoods.count>0">
+								<span class="name">{{itemFoods.name}}</span>
+								<div class="price">
+									<span>￥{{itemFoods.price*itemFoods.count}}</span>
+								</div>
+								<div class="cartcontrol-wrapper">
+									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
 								</div>
 							</li>
 						</div>
-							<!-- </div> -->
-						<!-- </li> -->
 					</ul>
 				</div>
 			</div>
@@ -83,26 +85,22 @@
 					}
 				],
 				fold: true,
-				deliveryPrice: 4,
-				listShow: false
+				deliveryPrice: 4
 			}
 		},
 		// mounted() {
 
 		// },
 		computed: mapGetters([
-			'payDesc','totalPrice','totalCount','foodCar','payClass','isCover','goodsData'
+			'payDesc','totalPrice','totalCount','foodCar','payClass','isCover','goodsData','goodsCount'
 		]),
 		methods: {
 			toggleList() {
-				this.listShow = !this.listShow
-				let isCover = !!(this.listShow && (this.totalCount>0))
-				// console.log(isCover);
-				this.$store.dispatch('isCover', isCover)
+				this.$store.dispatch('isCover', !this.isCover)
 			},
 			empty() {
-				//this.selectFoods.
-				this.listShow = false
+				this.$store.dispatch('isCover', false)
+				this.$store.dispatch('clearCar')
 			}
 		},
 		components: {
