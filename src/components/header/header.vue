@@ -18,49 +18,51 @@
 				</div>
 			</div>
 			<div v-if="sellerInfo.supports" class="support-count" @touchstart="showDetail()">
-				<span class="count">{{sellerInfo.supports.length}}</span>
-				<i></i>
+				<span class="count">{{sellerInfo.supports.length}}个</span>
+				<i class="icon iconfont icon-jiantouyou"></i>
 			</div>
 		</div>
 		<div class="bulletin-wrapper" @touchstart="showDetail()">
 			<span class="bulletin-title"></span><span class="bulletin-text">{{sellerInfo.bulletin}}</span>
-			<i></i>
+			<i class="icon iconfont icon-jiantouyou"></i>
 		</div>
 		<div class="background">
 			<img :src="sellerInfo.avatar" width="100%" height="100%" alt="">
 		</div>
-		<div v-show="detailShow" class="detail">
-			<div class="detail-wrapper clearfix">
-				<div class="detail-main">
-					<h1 class="name">{{sellerInfo.name}}</h1>
-					<div class="star-wrapper">
-						<star :size="48" :score="sellerInfo.score"></star>
-					</div>
-					<div class="title">
-						<div class="line"></div>
-						<div class="text">优惠信息</div>
-						<div class="line"></div>
-					</div>
-					<ul v-if="sellerInfo.supports" class="supports">
-						<li class="support-item" v-for="(item, index) in sellerInfo.supports">
-							<span class="icon" :class="classMap[index]"></span>
-							<span class="text">{{item.description}}</span>
-						</li>
-					</ul>
-					<div class="title">
-						<div class="line"></div>
-						<div class="text">商家公告</div>
-						<div class="line"></div>
-					</div>
-					<div class="bulletin">
-						<p class="content">{{sellerInfo.bulletin}}</p>
+		<transition name="fade">
+			<div v-show="detailShow" class="detail">
+				<div class="detail-wrapper clearfix">
+					<div class="detail-main">
+						<h1 class="name">{{sellerInfo.name}}</h1>
+						<div class="star-wrapper">
+							<star :size="48" :score="sellerInfo.score"></star>
+						</div>
+						<div class="title">
+							<div class="line"></div>
+							<div class="text">优惠信息</div>
+							<div class="line"></div>
+						</div>
+						<ul v-if="sellerInfo.supports" class="supports">
+							<li class="support-item" v-for="(item, index) in sellerInfo.supports">
+								<span class="icon" :class="classMap[index]"></span>
+								<span class="text">{{item.description}}</span>
+							</li>
+						</ul>
+						<div class="title">
+							<div class="line"></div>
+							<div class="text">商家公告</div>
+							<div class="line"></div>
+						</div>
+						<div class="bulletin">
+							<p class="content">{{sellerInfo.bulletin}}</p>
+						</div>
 					</div>
 				</div>
+				<div class="detail-close" @click="hideDetail()">
+					<i class="icon iconfont icon-close"></i>
+				</div>
 			</div>
-			<div class="detail-close" @click="hideDetail()">
-				<i></i>
-			</div>
-		</div>
+		</transition>
 	</div>
 </template>
 <script>
@@ -99,6 +101,7 @@
 	}
 </script>
 <style lang="less" rel="stylesheet/less">
+	// @import url("../../common/iconfont/iconfont.css");
 	.bg-img(@url) {
 		background-image: url('@{url}@2x.png');
 		@media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3) {
@@ -207,8 +210,12 @@
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			position: relative;
 			/* font-size: 0; */
 			.bulletin-title {
+				// position: absolute;
+				// left: 12px;
+				// top: 8px;
 				display: inline-block;
 				width: 22px;
 				height: 12px;
@@ -219,10 +226,22 @@
 				margin-top: 7px;
 			}
 			.bulletin-text {
+				// position: absolute;
+				// left: 34px;
+				// top: 1px;
 				font-size: 10px;
 				font-weight: 200;
 				margin: 0 4px;
 				vertical-align: top;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			>i {
+				position: absolute;
+		        font-size: 10px;
+		        right: 12px;
+		        top: 0;
 			}
 		}
 		.background {
@@ -243,6 +262,13 @@
 			background: rgba(7, 17, 27, 0.8);
 			top: 0;
 			left: 0;
+			&.fade-enter-active, &.fade-leave-active {
+		      	transition: all 0.5s;
+		    }
+		    &.fade-enter, &.fade-leave-active {
+		      	opacity: 0;
+		      	background: rgba(7, 17, 27, 0);
+		    }
 			.detail-wrapper {
 				min-height: 100%;
 				width: 100%;
@@ -336,6 +362,9 @@
 				margin: -64px auto 0 auto;
 				clear: both;
 				font-size: 32px;
+				> i {
+					font-size: 24px;
+				}
 			}
 		}
 	}

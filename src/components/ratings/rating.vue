@@ -7,7 +7,7 @@
 			<span @touchstart="select(1)" class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">{{negative}}</span></span>
 		</div>
 		<div @touchstart="toggleContent($event)" class="switch" :class="{'on':onlyContent}">
-			<span></span>
+			<i class="icon iconfont" :class="onlyContent?'icon-success_fill':'icon-success1'"></i>
 			<span class="text">只看有内容的评价</span>
 		</div>
 	</div>
@@ -15,7 +15,7 @@
 		<ul v-show="foodData.ratings && foodData.ratings.length">
 			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
 				<div class="user">
-					<span class="name">{{rating.username}}</span>
+					<span class="name">{{rating.username | formatDate("yyyy-MM-dd")}}</span>
 					<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
 				</div>
 				<div class="time">{{rating.rateTime}}</div>
@@ -35,12 +35,12 @@
 				<div class="comment-content">
 					<div class="info-top">
 						<span class="name">{{rating.username}}</span>
-						<span class="time">{{rating.rateTime}}</span>
+						<span class="time">{{rating.rateTime | formatDate("yyyy-MM-dd")}}</span>
 					</div>
 					<star :size="24" :score="rating.score"></star>
 					<p class="text">{{rating.text}}</p>
 					<div class="tag">
-						<span>⊙</span>
+						<i class="icon iconfont" :class="{'icon-like-b':rating.rateType==0,'icon-dislike':rating.rateType==1}"></i>
 						<ul>
 							<li v-for="item in rating.recommend">{{item}}</li>
 						</ul>
@@ -56,6 +56,7 @@
 	/* eslint-disable */
 	import {mapGetters} from 'vuex'
 	import star from '@/components/star/star.vue'
+	import {formatDate} from '@/filter/filters'
 	const POSITIVE = 0,
 			NEGATIVE = 1,
 			ALL =2
@@ -136,11 +137,14 @@
 					color: #00c850;
 				}
 			}
-			> span {
+			> i {
 				display: inline-block;
 				vertical-align: top;
 				margin-right: 4px;
 				font-size: 24px;
+				&.icon-success_fill {
+					color: #00c850;
+				}
 			}
 			&.text {
 				font-size: 12px;
@@ -234,13 +238,16 @@
 						line-height: 18px;
 					}
 					.tag {
-						> span {
-							display: inline-block;
-							width: 8px;
-							height: 8px;
+						position: relative;
+						height: 40px;
+						> i {
+							color: #00a0dc;
 						}
 						> ul {
-							margin-left: 8px;
+							position: absolute;
+							top: 0;
+							right: 0;
+							margin-left: 20px;
 							> li {
 								display: inline-block;
 								padding: 0 6px;

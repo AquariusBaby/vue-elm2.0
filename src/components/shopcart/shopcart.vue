@@ -4,7 +4,7 @@
 			<div class="content-left">
 				<div class="logo-wrapper">
 					<div class="logo" :class="{'highlight':totalCount>0}">
-						<i class="" :class="{'highlight':totalCount>0}"></i>
+						<i class="icon iconfont icon-gouwuche" :class="{'highlight':totalCount>0}"></i>
 					</div>
 					<div class="num" v-show="totalCount>0">{{totalCount}}</div>
 				</div>
@@ -17,45 +17,52 @@
 				</div>
 			</div>
 			<!-- <div class="ball-container">
-				<div v-for="ball in balls" v-show="ball.show" class="ball"></div>
-				<div class="inner"></div>
-			</div> -->
-			<div class="shopcart-list" v-show="isCover">
-				<div class="list-header">
-					<h1 class="title">购物车</h1>
-					<span class="empty" @click.stop="empty()">清空</span>
-				</div>
-				<div class="list-content" ref="listContent">
-					<ul>
-						<!-- <li class="food" v-for="(item, typeIndex) in goodsData"> -->
-							<!-- <div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0"> -->
-						<!--123 <div v-for="(item, typeIndex) in goodsData">
-							<li class="food" v-for="(itemFoods, index) in item.foods"  v-if="itemFoods.count>0">
-								<span class="name">{{itemFoods.name}}</span>
-								<div class="price">
-									<span>￥{{itemFoods.price*itemFoods.count}}</span>
-								</div>
-								<div class="cartcontrol-wrapper">
-									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
-								</div>
-							</li>
-						</div> 123-->
-							<!-- </div> -->
-						<!-- </li> -->
-						<div v-for="(item, typeIndex) in goodsCount">
-							<li class="food" v-for="(itemFoods, index) in item"  v-if="itemFoods.count>0">
-								<span class="name">{{itemFoods.name}}</span>
-								<div class="price">
-									<span>￥{{itemFoods.price*itemFoods.count}}</span>
-								</div>
-								<div class="cartcontrol-wrapper">
-									<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
-								</div>
-							</li>
+				<div v-for="ball in balls">
+					<transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+						<div v-show="ball.show" class="ball">
+							<div class="inner inner-hook"></div>
 						</div>
-					</ul>
+					</transition>
 				</div>
-			</div>
+			</div> -->
+			<transition name="fold">
+				<div class="shopcart-list" v-show="isCover">
+					<div class="list-header">
+						<h1 class="title">购物车</h1>
+						<span class="empty" @click.stop="empty()">清空</span>
+					</div>
+					<div class="list-content" ref="listContent">
+						<ul>
+							<!-- <li class="food" v-for="(item, typeIndex) in goodsData"> -->
+								<!-- <div v-for="itemFoods in item.foods"  v-if="itemFoods.count>0"> -->
+							<!--123 <div v-for="(item, typeIndex) in goodsData">
+								<li class="food" v-for="(itemFoods, index) in item.foods"  v-if="itemFoods.count>0">
+									<span class="name">{{itemFoods.name}}</span>
+									<div class="price">
+										<span>￥{{itemFoods.price*itemFoods.count}}</span>
+									</div>
+									<div class="cartcontrol-wrapper">
+										<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
+									</div>
+								</li>
+							</div> 123-->
+								<!-- </div> -->
+							<!-- </li> -->
+							<div v-for="(item, typeIndex) in goodsCount">
+								<li class="food" v-for="(itemFoods, index) in item"  v-if="itemFoods.count>0">
+									<span class="name">{{itemFoods.name}}</span>
+									<div class="price">
+										<span>￥{{itemFoods.price*itemFoods.count}}</span>
+									</div>
+									<div class="cartcontrol-wrapper">
+										<vCartcontrol :foodsId="itemFoods.foodsId" :foodPrice="itemFoods.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="itemFoods.name"></vCartcontrol>
+									</div>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</div>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -84,6 +91,7 @@
 						show: false
 					}
 				],
+				dropBalls: [],
 				fold: true,
 				deliveryPrice: 4
 			}
@@ -102,6 +110,56 @@
 				this.$store.dispatch('isCover', false)
 				this.$store.dispatch('clearCar')
 			}
+			// drop(el) {
+			// 	for (let i = 0; i < this.balls.length; i++) {
+			// 		let ball = this.balls[i];
+			// 		if (!ball.show) {
+			// 			ball.show = true;
+			// 			ball.el = el;
+			// 			this.dropBalls.push(ball);
+			// 			return;
+			// 		}
+			// 	}
+			// },
+			// beforeDrop(el) {
+			// 	let count = this.balls.length;
+			// 	while (count--) {
+			// 	  let ball = this.balls[count];
+			// 	  if (ball.show) {
+			// 	    let rect = ball.el.getBoundingClientRect();
+			// 	    let x = rect.left - 32;
+			// 	    let y = -(window.innerHeight - rect.top - 22);
+			// 	    el.style.display = '';
+			// 	    el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+			// 	    el.style.transform = `translate3d(0,${y}px,0)`;
+			// 	    let inner = el.getElementsByClassName('inner-hook')[0];
+			// 	    inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+			// 	    inner.style.transform = `translate3d(${x}px,0,0)`;
+			// 	  }
+			// 	}
+			// },
+			// dropping(el, done) {
+			// 	/* eslint-disable no-unused-vars */
+			// 	let rf = el.offsetHeight;
+			// 	this.$nextTick(() => {
+			// 	  el.style.webkitTransform = 'translate3d(0,0,0)';
+			// 	  el.style.transform = 'translate3d(0,0,0)';
+			// 	  let inner = el.getElementsByClassName('inner-hook')[0];
+			// 	  inner.style.webkitTransform = 'translate3d(0,0,0)';
+			// 	  inner.style.transform = 'translate3d(0,0,0)';
+			// 	  el.addEventListener('transitionend', done);
+			// 	});
+			// },
+			// afterDrop(el) {
+			// 	let ball = this.dropBalls.shift();
+			// 	if (ball) {
+			// 	  ball.show = false;
+			// 	  el.style.display = 'none';
+			// 	}
+			// },
+			// addFood(target) {
+			// 	this.drop(target)
+			// }
 		},
 		components: {
 			'vCartcontrol': cartcontrol
@@ -221,20 +279,30 @@
 				left: 32px;
 				bottom: 22px;
 				z-index: 200;
+				transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
 				.inner {
 					width: 16px;
 					height: 16px;
 					border-radius: 50%;
 					background: rgb(0, 160, 220);
+					transition: all 0.4s linear;
 				}
 			}
 		}
 		.shopcart-list {
 			position: absolute;
-			bottom: 48px;
+			// bottom: 48px;
+			top: 0;
 			left: 0;
 			z-index: -1;
 			width: 100%;
+			transform: translate3d(0, -100%, 0);
+			&.fold-enter-active, &.fold-leave-active {
+				transition: all 0.5s;
+			}
+			&.fold-enter, &.fold-leave-active {
+				transform: translate3d(0, 0, 0);
+			}
 			.list-header {
 				height: 40px;
 				line-height: 40px;
@@ -261,11 +329,13 @@
 					position: relative;
 					padding: 12px 0;
 					box-sizing: border-box;
+					height: 50px;
 					border-bottom: 1px solid rgba(7, 17, 27, 0.1);
 					.name {
 						line-height: 24px;
 						font-size: 14px;
 						color: rgb(7, 17, 27);
+						float: left;
 					}
 					.price {
 						position: absolute;

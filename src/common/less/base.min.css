@@ -1,0 +1,121 @@
+* {
+  /* 手机端全局背景透明。*/
+  -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(255, 0, 0, 0);
+  -ms-tap-highlight-color: rgba(255, 0, 0, 0);
+  -o-tap-highlight-color: rgba(255, 0, 0, 0);
+  /* 取消手机端自动调整字体大小。*/
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  text-size-adjust: none;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-min-device-pixel-ratio: 1.5) {
+  .border-1px::after {
+    -webkit-transform: scaleY(0.7);
+    transform: scaleY(0.7);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-min-device-pixel-ratio: 2) {
+  .border-1px::after {
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}
+/**
+ * .5边框样式
+ */
+.half-border,
+.half-top-border,
+.half-right-border,
+.half-bottom-border,
+.half-left-border {
+  position: relative;
+  z-index: 1;
+}
+.half-border:after,
+.half-top-border:after,
+.half-right-border:after,
+.half-bottom-border:after,
+.half-left-border:after {
+  z-index: -1;
+  box-sizing: border-box;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5, 0.5);
+  -webkit-transform: scale(0.5, 0.5);
+  border-style: solid;
+  border-color: #e2e2e2;
+  border-width: 0 0 0 0;
+  transform-origin: top left;
+  -webkit-transform-origin: top left;
+}
+.half-border:after {
+  border-width: 1px !important;
+}
+.half-top-border:after {
+  border-top-width: 1px !important;
+}
+.half-right-border:after {
+  border-right-width: 1px !important;
+}
+.half-bottom-border:after {
+  border-bottom-width: 1px !important;
+}
+.half-left-border:after {
+  border-left-width: 1px !important;
+}
+@font-face {
+  font-family: 'iconfont';
+  src: url('../iconfont/iconfont.css');
+  src: url('../iconfont/iconfont.eot');
+  /* IE9*/
+  src: url('../iconfont/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../iconfont/iconfont.woff') format('woff'), /* chrome、firefox */ url('../iconfont/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('../iconfont/iconfont.svg#iconfont') format('svg');
+  /* iOS 4.1- */
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  /*font-size:16px;*/
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  /*-webkit-text-stroke-width: 0.2px;*/
+  -moz-osx-font-smoothing: grayscale;
+}
+/* 清除浮动 */
+.clearfix {
+  display: inline-block;
+}
+.clearfix:after {
+  content: '';
+  display: block;
+  height: 0;
+  line-height: 0;
+  clear: both;
+  visibility: hidden;
+}
+/* 清除浮动 */
+.ks-clear:after {
+  content: '\20';
+  display: block;
+  height: 0;
+  clear: both;
+}
+.ks-clear {
+  *zoom: 1;
+}
+/* 省略号 */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body,
+html {
+  line-height: 1;
+  font-weight: 200;
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica_light', arial, sans-serif;
+}

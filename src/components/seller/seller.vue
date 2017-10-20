@@ -29,7 +29,8 @@
           </li>
         </ul>
         <div class="favorite" @touchstart="toggleFavorite()">
-          <span class="icon-favorite" :class="{'active':favorite}"></span>
+          <!-- <span class="icon-favorite" :class="{'active':favorite}"></span> -->
+          <i class="icon iconfont" :class="favorite?'icon-love-b': 'icon-love-b1'"></i>
           <span class="text">{{favorite?"已收藏":"收藏"}}</span>
         </div>
       </div>
@@ -233,17 +234,12 @@
         right: 11px;
         top: 18px;
         text-align: center;
-        .icon-favorite {
-          display: block;
-          margin-bottom: 4px;
-          line-height: 24px;
-          font-size: 24px;
-          color: #d4d6d9;
-          &.active {
-            color: rgb(240, 20, 20);
-          }
+        > i.icon-love-b {
+          color: rgb(240, 20, 20);
         }
         .text {
+          display: block;
+          margin-top: 5px;
           line-height: 10px;
           font-size: 10px;
           color: rgb(77, 85, 93);

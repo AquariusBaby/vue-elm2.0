@@ -8,6 +8,7 @@ import Food from '@/components/food/food.vue'
 Vue.use(Router)
 /* eslint-disable */
 export default new Router({
+	// base: "/app/",
 	routes: [
 		{
 			path: '/',

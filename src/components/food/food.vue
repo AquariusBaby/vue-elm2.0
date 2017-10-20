@@ -1,38 +1,40 @@
 <template>
-	<div ref="food" v-show='isShowFoodDetail&&isFinished' class="food">
-		<div class="food-content">
-			<div class="image-header">
-				<img :src="foodData.image" alt="">
-				<div @touchstart="hide()" class="go-back">
-					<i><</i>
+	<!-- <transition name="move"> -->
+		<div ref="food" v-show='isShowFoodDetail&&isFinished' class="food">
+			<div class="food-content">
+				<div class="image-header">
+					<img :src="foodData.image" alt="">
+					<div @touchstart="hide()" class="go-back">
+						<i class="icon iconfont icon-fanhui1"></i>
+					</div>
 				</div>
-			</div>
-			<div class="content">
-				<h1 class="title">{{foodData.name}}</h1>
-				<div class="detail">
-					<span class="sell-count">月售{{foodData.sellCount}}份</span>
-					<span class="rating">好评率:{{foodData.rating}}%</span>
+				<div class="content">
+					<h1 class="title">{{foodData.name}}</h1>
+					<div class="detail">
+						<span class="sell-count">月售{{foodData.sellCount}}份</span>
+						<span class="rating">好评率:{{foodData.rating}}%</span>
+					</div>
+					<div class="price">
+						<span class="now">￥{{foodData.price}}</span><span class="old" v-show="foodData.oldPrice">￥{{foodData.oldPrice}}</span>
+					</div>
+					<div class="cartcontrol-wrapper">
+						<!-- <vCartcontrol :food="food"></vCartcontrol> -->
+					</div>
+					<div @touch="addFirst($event)" class="buy" v-show="!foodData.count || foodData.count===0">加入购物车</div>
 				</div>
-				<div class="price">
-					<span class="now">￥{{foodData.price}}</span><span class="old" v-show="foodData.oldPrice">￥{{foodData.oldPrice}}</span>
+				<vSplit v-show="foodData.info"></vSplit>
+				<div class="info" v-show="foodData.info">
+					<h1 class="title">商品信息</h1>
+					<p class="text">{{foodData.info}}</p>
 				</div>
-				<div class="cartcontrol-wrapper">
-					<!-- <vCartcontrol :food="food"></vCartcontrol> -->
+				<vSplit></vSplit>
+				<div class="rating">
+					<h1 class="title">商品评价</h1>
+					<vRating></vRating>
 				</div>
-				<div @touch="addFirst($event)" class="buy" v-show="!foodData.count || foodData.count===0">加入购物车</div>
-			</div>
-			<vSplit v-show="foodData.info"></vSplit>
-			<div class="info" v-show="foodData.info">
-				<h1 class="title">商品信息</h1>
-				<p class="text">{{foodData.info}}</p>
-			</div>
-			<vSplit></vSplit>
-			<div class="rating">
-				<h1 class="title">商品评价</h1>
-				<vRating></vRating>
 			</div>
 		</div>
-	</div>
+	<!-- </transition> -->
 </template>
 <script>
 	/* eslint-disable */
@@ -123,6 +125,13 @@
 		z-index:  30;
 		width: 100%;
 		background: #fff;
+		transform: translate3d(0, 0, 0);
+	    &.move-enter-active, &.move-leave-active {
+	      transition: all 0.2s linear;
+	    }
+	    &.move-enter, &.move-leave-active {
+	      transform: translate3d(0, 100%, 0);
+	    }
 		.food-content {
 			.image-header {
 				position: relative;
@@ -142,9 +151,12 @@
 					left: 0;
 					> i {
 						display: block;
-						padding: 10px;
-						font-size: 20px;
+						padding: 7px;
+						font-size: 13px;
 						color: #fff;
+						border-radius: 50%;
+					    background: rgba(0,0,0,0.3);
+					    margin-left: 10px;
 					}
 				}
 			}

@@ -17,7 +17,9 @@
         <router-view></router-view>
       </keep-alive>
     </div>
-    <div class="cover" @click.stop="closeCover()" v-show="isCover"></div>
+    <transition name="fade">
+      <div class="cover" @click.stop="closeCover()" v-show="isCover"></div>
+    </transition>
     <vShopcart></vShopcart>
   </div>
 </template>
@@ -98,6 +100,13 @@ export default {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
+    &.fade-enter-active, &.fade-leave-active {
+      transition: all 0.5s;
+    }
+    &.fade-enter, &.fade-leave-active {
+      opacity: 0;
+      background: rgba(7, 17, 27, 0);
+    }
   }
 }
 </style>

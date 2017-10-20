@@ -15,7 +15,7 @@
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
 						<li @click="getFoodDetail(food.foodsId, typeIndex, $event)" v-for="(food, index) in item.foods" class="food-item border-1px">
-							<div class="icon">
+							<div class="icon-avatar">
 								<img width="57" height="57" :src="food.icon" alt="">
 							</div>
 							<div class="content">
@@ -112,6 +112,15 @@
 				this.$store.dispatch('getFoodDetail')
 				this.$router.push({path: '/foodDetail', query: { foodsId: foodsId, foodsIndex: index }})
 			}
+			// addFood(target) {
+   //      		this._drop(target);
+   //    		},
+   //    		_drop(target) {
+   //      		// 体验优化,异步执行下落动画
+   //      		this.$nextTick(() => {
+   //        			this.$refs.shopcart.drop(target);
+   //      		});
+   //    		}
 		},
 		components: {
 			// 'vShopcart': shopcart,
@@ -224,7 +233,7 @@
 					.border-none();
 					margin-bottom: 0;
 				}
-				.icon {
+				.icon-avatar {
 					flex: 0 0 57px;
 					margin-right: 10px;
 				}
