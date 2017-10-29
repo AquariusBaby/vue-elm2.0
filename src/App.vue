@@ -20,7 +20,7 @@
     <transition name="fade">
       <div class="cover" @click.stop="closeCover()" v-show="isCover"></div>
     </transition>
-    <vShopcart></vShopcart>
+    <!-- <vShopcart></vShopcart> -->
   </div>
 </template>
 
