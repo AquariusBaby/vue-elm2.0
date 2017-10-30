@@ -31,7 +31,7 @@
 								<div class="cartcontrol-wrapper">
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex"></vCartcontrol> -->
 									<!-- <vCartcontrol :foodsId="food.foodsId" :typeIndex="typeIndex" :foodPrice="food.price" :foodName="food.name" :count="food.count"></vCartcontrol> -->
-									<vCartcontrol :foodsId="food.foodsId" :foodPrice="food.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="food.name"></vCartcontrol>
+									<vCartcontrol :foodsId="food.foodsId" :foodPrice="food.price" :foodIndex="index" :typeIndex="typeIndex" :foodName="food.name" @add="add"></vCartcontrol>
 								</div>
 							</div>
 						</li>
@@ -39,7 +39,7 @@
 				</li>
 			</ul>
 		</div>
-		<!-- <vShopcart></vShopcart> -->
+		<vShopcart ref="shopcart"></vShopcart>
 		<!-- <vFood ref="food"></vFood> -->
 	</div>
 </template>
@@ -48,7 +48,7 @@
 	import { mapGetters } from 'vuex'
 	import Vue from 'vue'
 	import BScroll from 'better-scroll'
-	// import shopcart from '@/components/shopcart/shopcart.vue'
+	import shopcart from '@/components/shopcart/shopcart.vue'
 	import cartcontrol from '@/components/cartcontrol/cartcontrol.vue'
 	import food from '@/components/food/food.vue'
 	export default {
@@ -111,19 +111,21 @@
 			getFoodDetail(foodsId, index, event) {
 				this.$store.dispatch('getFoodDetail')
 				this.$router.push({path: '/foodDetail', query: { foodsId: foodsId, foodsIndex: index }})
-			}
-			// addFood(target) {
-   //      		this._drop(target);
-   //    		},
-   //    		_drop(target) {
-   //      		// 体验优化,异步执行下落动画
-   //      		this.$nextTick(() => {
-   //        			this.$refs.shopcart.drop(target);
-   //      		});
-   //    		}
+			},
+			add(target) {
+    		// this._drop(target);
+    		this._drop(target)
+  		},
+  		_drop(target) {
+    		// 体验优化,异步执行下落动画
+    		this.$nextTick(() => {
+      			this.$refs.shopcart.drop(target);
+    		});
+    		// this.$refs.shopcart.drop(target);
+  		}
 		},
 		components: {
-			// 'vShopcart': shopcart,
+			'vShopcart': shopcart,
 			'vCartcontrol': cartcontrol,
 			'vFood': food
 		}

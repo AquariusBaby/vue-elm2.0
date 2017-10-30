@@ -1,8 +1,5 @@
 <template>
 	<div class="cartcontrol">
-		<!-- <div class="decrease" @click.stop='decCart()' v-show="goodsCount[typeIndex][foodIndex]>0">-</div>
-		<div class="count" v-show="goodsCount[typeIndex][foodIndex]>0">{{goodsCount[typeIndex][foodIndex]}}</div>
-		<div class="increase" @click.stop='addCart()'>+</div> -->
 		<transition name="move">
 			<div class="decrease" @click.stop.prevent='decCart()' v-show="(goodsCount[typeIndex][foodIndex]).count>0">
 				<i class="icon iconfont icon-offline_fill rotate"></i>
@@ -68,6 +65,7 @@
 				this.$store.dispatch('addCar', foodItem)
 			//vue是通过检测get,set才得知数据是否更新的，而对于数组来说，是没有get，set方法的，所以需要我们自己手动触发，需要发送消息通知vue
 				// this.$set(this.goodsCount, this.goodsCount)
+				this.$emit('add', event.target)
 			},
 			decCart() {
 				let foodItem = {
