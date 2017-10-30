@@ -101,7 +101,7 @@ export default {
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     &.fade-enter-active, &.fade-leave-active {
-      transition: all 0.5s;
+      transition: all 0.2s;
     }
     &.fade-enter, &.fade-leave-active {
       opacity: 0;

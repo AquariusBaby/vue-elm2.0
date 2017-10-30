@@ -121,7 +121,6 @@
     		this.$nextTick(() => {
       			this.$refs.shopcart.drop(target);
     		});
-    		// this.$refs.shopcart.drop(target);
   		}
 		},
 		components: {

@@ -263,7 +263,7 @@
 			top: 0;
 			left: 0;
 			&.fade-enter-active, &.fade-leave-active {
-		      	transition: all 0.5s;
+		      	transition: all 0.2s;
 		    }
 		    &.fade-enter, &.fade-leave-active {
 		      	opacity: 0;

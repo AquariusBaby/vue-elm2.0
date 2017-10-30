@@ -7,12 +7,34 @@
      * @param {String} sFormat 格式化字符串
      * @return {Date}
      */
-    function formatDate (sDateTime, sFormat) {
+     function padLeftZero (str) {
+       return ('00' + str).substr(str.length)
+     }
+     function formatDate (date, fmt) {
+       if (/(y+)/.test(fmt)) {
+         fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+       }
+       let o = {
+         'M+': date.getMonth() + 1,
+         'd+': date.getDate(),
+         'h+': date.getHours(),
+         'm+': date.getMinutes(),
+         's+': date.getSeconds()
+       }
+       for (let k in o) {
+         if (new RegExp(`(${k})`).test(fmt)) {
+           let str = o[k] + ''
+           fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str))
+         }
+       }
+       return fmt
+     };
+    /*function formatDate (sDateTime, sFormat) {
         if (!sDateTime) {
             return "";
         }
         var dDate = null,
-            sDateType = $.type(sDateTime)
+            sDateType = sDateTime
             ;
 
         if (sDateType === "date") { // 日期对象。
@@ -54,7 +76,7 @@
             }
         }
         return sFormat;
-    };
+    };*/
 	/**
      * 将时间转化成Long型
      *
@@ -142,10 +164,35 @@
         }
         return sReturn;
     };
+    /**
+    *金额的格式化
+    */
+    function currency (value, currency, decimals) {
+      value = parseFloat(value)
+      if (!isFinite(value) || (!value && value !== 0)) return ''
+      currency = currency != null ? currency : '$'
+      decimals = decimals != null ? decimals : 2
+      var stringified = Math.abs(value).toFixed(decimals)
+      var _int = decimals
+        ? stringified.slice(0, -1 - decimals)
+        : stringified
+      var i = _int.length % 3
+      var head = i > 0
+        ? (_int.slice(0, i) + (_int.length > 3 ? ',' : ''))
+        : ''
+      var _float = decimals
+        ? stringified.slice(-1 - decimals)
+        : ''
+      var sign = value < 0 ? '-' : ''
+      return sign + currency + head +
+        _int.slice(i).replace(digitsRE, '$1,') +
+        _float
+    };
 // }
 /* eslint-disable */
 export {
     formatDate,
     transDateToLong,
-    toFixed
+    toFixed,
+    currency
 }

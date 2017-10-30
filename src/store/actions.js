@@ -1,5 +1,7 @@
 /* eslint-disable */
 import axios from 'axios'
+import goods from '../api/goods'
+
 export default {
 	getSllerInfo: ({commit}) => {
 		return axios.get('static/json/sellerInfo.json')

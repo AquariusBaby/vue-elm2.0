@@ -15,10 +15,10 @@
 		<ul v-show="foodData.ratings && foodData.ratings.length">
 			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
 				<div class="user">
-					<span class="name">{{rating.username | formatDate("yyyy-MM-dd")}}</span>
+					<span class="name">{{rating.username}}</span>
 					<img class="avatar" width="12" height="12" :src="rating.avatar" alt="">
 				</div>
-				<div class="time">{{rating.rateTime}}</div>
+				<div class="time">{{rating.rateTime | formatDate("yyyy-MM-dd")}}</div>
 				<p class="text">
 					<span></span>{{rating.text}}
 				</p>
@@ -54,9 +54,10 @@
 </template>
 <script>
 	/* eslint-disable */
-	import {mapGetters} from 'vuex'
+	import { mapGetters } from 'vuex'
 	import star from '@/components/star/star.vue'
-	import {formatDate} from '@/filter/filters'
+	import { formatDate } from '@/filter/filters'
+
 	const POSITIVE = 0,
 			NEGATIVE = 1,
 			ALL =2
@@ -88,6 +89,12 @@
 		},
 		components: {
 			'star': star
+		},
+		filters: {
+			formatDate(time,type) {
+        var date = new Date(time)
+        return formatDate(date, type)
+      }
 		}
 	}
 </script>

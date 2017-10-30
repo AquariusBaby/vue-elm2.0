@@ -285,7 +285,7 @@
 			width: 100%;
 			transform: translate3d(0, -100%, 0);
 			&.fold-enter-active, &.fold-leave-active {
-				transition: all 0.5s;
+				transition: all 0.2s;
 			}
 			&.fold-enter, &.fold-leave-active {
 				transform: translate3d(0, 0, 0);
