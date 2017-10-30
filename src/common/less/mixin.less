@@ -23,3 +23,14 @@
 		background-image: url(@url + "@3x.png");
 	}
 } */
+
+/* 省略号 */
+.ellipsis{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.px2rem(@name, @px){
+    @{name}: @px / 16 * 1rem;
+}
