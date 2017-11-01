@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from 'axios'
-import goods from '../api/goods'
+// import {getSllerInfo} from '../api/goods'
 
 export default {
 	getSllerInfo: ({commit}) => {
@@ -17,6 +17,7 @@ export default {
 				console.log(err)
 		})
 	},
+	// getSllerInfo()
 	getGoodsData: ({commit}) => {
 		//返回一个axios对象，axios是基于promise的，所以可以使用.then().catch()
 		return axios.get('static/json/foodList.json')

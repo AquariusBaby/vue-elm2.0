@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './store/index'
+import './framework/rem'
 
 import 'common/less/index.less'
 

@@ -89,6 +89,8 @@ export default {
         color: rgb(77, 85, 93);
         &.router-link-active {
           color: rgb(240, 20, 20);
+          // border-bottom: 1px solid red;
+          // box-sizing: border-box;
         }
       }
     }
