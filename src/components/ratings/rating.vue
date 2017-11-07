@@ -11,7 +11,7 @@
 			<span class="text">只看有内容的评价</span>
 		</div>
 	</div>
-	<div class="rating-wrapper rating-food" v-if="!isMerchant">
+	<div class="rating-wrapper rating-food" v-if="!isMerchant" v-show="foodData.ratings">
 		<ul v-show="foodData.ratings && foodData.ratings.length">
 			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
 				<div class="user">
@@ -26,6 +26,7 @@
 		</ul>
 		<div class="no-rating" v-show="!foodData.ratings || foodData.ratings.length"></div>
 	</div>
+	<loading v-show="!foodData.ratings"></loading>
 	<div class="rating-wrapper rating-comment" v-if="isMerchant">
 		<ul v-show="foodData.ratings && foodData.ratings.length">
 			<li v-for="rating in foodData.ratings" class="rating-item" v-show="(rating.text||onlyContent)&&(rating.rateType==selectType||selectType==2)">
@@ -56,6 +57,7 @@
 	/* eslint-disable */
 	import { mapGetters } from 'vuex'
 	import star from '@/components/star/star.vue'
+	import loading from '@/components/loading/loading.vue'
 	import { formatDate } from '@/filter/filters'
 
 	const POSITIVE = 0,
@@ -88,7 +90,8 @@
 			}
 		},
 		components: {
-			'star': star
+			'star': star,
+			'loading': loading
 		},
 		filters: {
 			formatDate(time,type) {

@@ -16,7 +16,8 @@
 					<ul>
 						<li @click="getFoodDetail(food.foodsId, typeIndex, $event)" v-for="(food, index) in item.foods" class="food-item border-1px">
 							<div class="icon-avatar">
-								<img width="57" height="57" :src="food.icon" alt="">
+								<!-- <img width="57" height="57" :src="food.icon" alt=""> -->
+								<img width="57" height="57" v-lazy="food.icon" alt="">
 							</div>
 							<div class="content">
 								<h2 class="name">{{food.name}}</h2>

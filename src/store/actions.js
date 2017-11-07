@@ -36,18 +36,21 @@ export default {
 	},
 	getCommentData: ({commit}) => {
 		//返回一个axios对象，axios是基于promise的，所以可以使用.then().catch()
-		return axios.get('static/json/comment.json')
-		.then(
-			function(res) {
-				commit('getCommentData', {data: res.data.ratings})
-			},
-			function(err) {
-				console.log(err.type);
-		})
-		.catch(
-			function(err) {
-				console.log(err)
-		})
+		// setTimeout(function(){
+			return axios.get('static/json/comment.json')
+			.then(
+				function(res) {
+					commit('getCommentData', {data: res.data.ratings})
+				},
+				function(err) {
+					console.log(err.type);
+			})
+			.catch(
+				function(err) {
+					console.log(err)
+			})
+		// },3000)
+		
 	},
 	changeCurIndex: ({commit}, index) => {
 		commit('changeCurIndex', index)
