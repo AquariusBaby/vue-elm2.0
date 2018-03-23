@@ -3,7 +3,7 @@
     <vHeader></vHeader>
     <div class="tab border-1px">
       <div class="tab-item">
-        <router-link to="/goods">商品</router-link>
+        <router-link :to="{name: 'gooda'}">商品</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/comment">评论</router-link>

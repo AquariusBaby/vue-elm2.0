@@ -1,10 +1,10 @@
 <template>
 	<!-- <transition name="move"> -->
-		<div ref="food" v-show='isShowFoodDetail&&isFinished' class="food">
+		<div ref="food" class="food">
 			<div class="food-content">
 				<div class="image-header">
 					<img :src="foodData.image" alt="">
-					<div @touchstart="hide()" class="go-back">
+					<div @click="goback()" class="go-back">
 						<i class="icon iconfont icon-fanhui1"></i>
 					</div>
 				</div>
@@ -83,8 +83,7 @@
 			show() {
 				this.showFlag = true
 			},
-			hide() {
-				this.$store.dispatch('hideFoodDetail')
+			goback() {
 				this.$router.go(-1)
 			},
 			getFoodInfo() {

@@ -42,6 +42,10 @@
 		</div>
 		<vShopcart ref="shopcart"></vShopcart>
 		<!-- <vFood ref="food"></vFood> -->
+    <transition name="bottom">
+      <router-view class="bottom-food"></router-view>
+    </transition>
+
 	</div>
 </template>
 <script>
@@ -64,12 +68,12 @@
 		computed: mapGetters([
 			'sellerInfo','goodsData','currentIndex','foodCar'
 		]),
-		beforeCreate() {
+		mounted() {
 			let _this = this
 			this.$store.dispatch('getGoodsData').then(function(){
 				_this.$nextTick(() => {
-					_this._initScroll()
-					_this._calculateHeight()
+          _this._initScroll()
+          _this._calculateHeight()
 				})
 			})
 		},
@@ -110,8 +114,8 @@
 				this.$store.dispatch('changeCurIndex', index)
 			},
 			getFoodDetail(foodsId, index, event) {
-				this.$store.dispatch('getFoodDetail')
-				this.$router.push({path: '/foodDetail', query: { foodsId: foodsId, foodsIndex: index }})
+				// this.$store.dispatch('getFoodDetail')
+				this.$router.push({path: '/goods/detail', query: { foodsId: foodsId, foodsIndex: index }})
 			},
 			add(target) {
     		// this._drop(target);
@@ -165,7 +169,7 @@
 		.menu-wrapper {
 			flex: 0 0 80px;
 			width: 80px;
-			background: #f3f5f7; 
+			background: #f3f5f7;
 			.menu-item {
 				display: table;
 				height: 54px;
@@ -276,7 +280,7 @@
 						.old {
 							text-decoration: line-through;
 							font-size: 10px;
-							color: rgb(147,153,159); 
+							color: rgb(147,153,159);
 						}
 					}
 					.cartcontrol-wrapper {
@@ -288,4 +292,12 @@
 			}
 		}
 	}
+  .bottom-enter-active, &.bottom-leave-active {
+    transition: all .8s;
+  }
+  .bottom-enter, &.bottom-leave-active {
+    opacity: 0;
+    /*-webkit-transform: translate(0, 100%);*/
+    transform: translateY(100%);
+  }
 </style>
